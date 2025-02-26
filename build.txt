@@ -1,0 +1,3 @@
+displayName = Jimbo&#39;s Desert Expansion
+author = Jimbo Animations (me!!!)
+version = 0.1
