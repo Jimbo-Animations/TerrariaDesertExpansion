@@ -6,7 +6,7 @@ global using Terraria;
 global using Terraria.ID;
 global using static Terraria.ModLoader.ModContent;
 global using Terraria.Audio;
-global using DesertExpansion.Systems.Utilities;
+global using TerrariaDesertExpansion.Systems.Utilities;
 using System.Collections.Generic;
 
 namespace TerrariaDesertExpansion

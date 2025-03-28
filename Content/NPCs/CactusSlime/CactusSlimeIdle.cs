@@ -1,5 +1,5 @@
-﻿using DesertExpansion.Content.NPCs.CactusSlime;
-using DesertExpansion.Systems;
+﻿using TerrariaDesertExpansion.Content.NPCs.CactusSlime;
+using TerrariaDesertExpansion.Systems;
 using Terraria.DataStructures;
 using TerrariaDesertExpansion.Content.Dusts;
 
@@ -7,7 +7,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 {
     internal class CactusSlimeIdle : ModNPC
     {
-        public override string Texture => "DesertExpansion/Content/NPCs/CactusSlime/MegaCactusSlime";
+        public override string Texture => "TerrariaDesertExpansion/Content/NPCs/CactusSlime/MegaCactusSlime";
 
         public override void SetStaticDefaults()
         {

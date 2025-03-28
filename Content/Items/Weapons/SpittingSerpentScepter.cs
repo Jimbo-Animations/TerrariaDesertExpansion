@@ -17,7 +17,7 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
             Item.UseSound = SoundID.Item151 with { Pitch = .3f };
             Item.SetShopValues(ItemRarityColor.Green2, Item.sellPrice(silver: 50));
 
-            Item.SetWeaponValues(13, 4f, 0);
+            Item.SetWeaponValues(12, 4f, 0);
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ProjectileType<ScepterSpit>();
             Item.shootSpeed = 10;
@@ -54,15 +54,15 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
         {
             CreateRecipe()
                 .AddIngredient<SerpentFang>(8)
-                .AddIngredient(ItemID.AntlionMandible, 2)
+                .AddIngredient(ItemID.Wood, 2)
                 .AddTile(TileID.WorkBenches)
                 .Register();
         }
     }
 
-    class ScepterBite : ModProjectile
+    /* class ScepterBite : ModProjectile
     {
-        public override string Texture => "DesertExpansion/Content/NPCs/EvilSnake/EvilSnakeBite";
+        public override string Texture => "TerrariaDesertExpansion/Content/NPCs/EvilSnake/EvilSnakeBite";
 
         public override void SetStaticDefaults()
         {
@@ -141,11 +141,11 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
 
             return false;
         }
-    }
+    } */
 
     class ScepterSpit : ModProjectile
     {
-        public override string Texture => "DesertExpansion/Content/ExtraAssets/NoSprite";
+        public override string Texture => "TerrariaDesertExpansion/Content/ExtraAssets/NoSprite";
 
         public override void SetDefaults()
         {
@@ -154,7 +154,7 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
             Projectile.friendly = true;
             Projectile.timeLeft = 60;
             Projectile.DamageType = DamageClass.Magic;
-            Projectile.penetrate = 1;
+            Projectile.penetrate = 2;
 
             Projectile.ignoreWater = true;
             Projectile.extraUpdates = 1;

@@ -1,4 +1,4 @@
-﻿namespace DesertExpansion.Content.NPCs.TheSun
+﻿namespace TerrariaDesertExpansion.Content.NPCs.TheSun
 {
     partial class TheSun : ModNPC
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ReLogic.Content;
 using Terraria.WorldBuilding;
 
-namespace DesertExpansion.Systems.Utilities
+namespace TerrariaDesertExpansion.Systems.Utilities
 {
     // Code taken from a variety of sources. Ebon provided the majority of it.
 

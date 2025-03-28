@@ -14,8 +14,6 @@
 	  <Folder Include="Content\Items\Placeables\" />
 	  <Folder Include="Content\Items\Tools\" />
 	  <Folder Include="Content\Projectiles\" />
-	  <Folder Include="Content\Tiles\" />
-	  <Folder Include="Systems\GlobalNPCs\" />
 	  <Folder Include="Systems\GlobalProjectiles\" />
 	</ItemGroup>
 

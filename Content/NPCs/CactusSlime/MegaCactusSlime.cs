@@ -1,7 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using TerrariaDesertExpansion.Content.NPCs.CactusSlime;
-
-namespace DesertExpansion.Content.NPCs.CactusSlime
+﻿
+namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 {
     [AutoloadBossHead]
     partial class MegaCactusSlime : ModNPC
@@ -77,7 +75,6 @@ namespace DesertExpansion.Content.NPCs.CactusSlime
 
                     if (AITimer > AIRandomizer * AIModifier && isGrounded)
                     {
-
                         AITimer = 0;
                         NPC.velocity = new Vector2(MathHelper.Clamp((NPC.Center.X - target.Center.X) / (75 * -goalDirection) * (MovementTracker % 2 == 1 ? 2.4f : 1), 1, 7) * goalDirection, MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -25, -12.5f) * (MovementTracker % 2 == 1 ? 0.6f : 1));
                         NPC.spriteDirection = -goalDirection;

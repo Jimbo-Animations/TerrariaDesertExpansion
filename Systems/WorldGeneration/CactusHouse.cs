@@ -1,40 +1,32 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework.Input;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using Terraria.GameContent.Generation;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.WorldBuilding;
-using Terraria.UI;
-using Terraria.Graphics.Shaders;
 using TerrariaDesertExpansion.Content.Items.Weapons;
 
-namespace DesertExpansion.Systems.WorldGeneration
+namespace TerrariaDesertExpansion.Systems.WorldGeneration
 {
     public class DesertStructureSystem : ModSystem
     {      
-        public static LocalizedText DesertExpansionWorldgenPassMessage1 { get; private set; }
-        public static LocalizedText DesertExpansionWorldgenPassMessage2 { get; private set; }
+        public static LocalizedText DesertMoundMessage { get; private set; }
+        public static LocalizedText DesertHouseMessage { get; private set; }
 
         public override void SetStaticDefaults()
         {
-            DesertExpansionWorldgenPassMessage1 = Language.GetOrRegister(Mod.GetLocalizationKey($"WorldGen.{nameof(DesertExpansionWorldgenPassMessage1)}"));
-            DesertExpansionWorldgenPassMessage2 = Language.GetOrRegister(Mod.GetLocalizationKey($"WorldGen.{nameof(DesertExpansionWorldgenPassMessage2)}"));
+            DesertMoundMessage = Language.GetOrRegister(Mod.GetLocalizationKey($"WorldGen.{nameof(DesertMoundMessage)}"));
+            DesertHouseMessage = Language.GetOrRegister(Mod.GetLocalizationKey($"WorldGen.{nameof(DesertHouseMessage)}"));
         }
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             int PassIndex1 = tasks.FindIndex(genpass => genpass.Name.Equals("Full Desert"));
-            int PassIndex2 = tasks.FindIndex(genpass => genpass.Name.Equals("Quick Cleanup"));
 
             if (PassIndex1 != -1)
             {
                 tasks.Insert(PassIndex1 + 1, new DesertMoundPass("Generate Desert Mound", 100f));
             }
 
+            int PassIndex2 = tasks.FindIndex(genpass => genpass.Name.Equals("Quick Cleanup"));
 
             if (PassIndex2 != -1)
             {
@@ -51,13 +43,13 @@ namespace DesertExpansion.Systems.WorldGeneration
 
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {           
-            progress.Message = DesertStructureSystem.DesertExpansionWorldgenPassMessage1.Value;
+            progress.Message = DesertStructureSystem.DesertMoundMessage.Value;
+
+            int x = 1;
+            int y = 1;
 
             bool success = false;
             int attempts = 0;
-
-            int x = 1;
-            int y = 1;         
 
             while (!success)
             {
@@ -90,10 +82,8 @@ namespace DesertExpansion.Systems.WorldGeneration
                 WorldUtils.Gen(genPoint, new Shapes.Rectangle(28, 24), new Actions.TileScanner(TileID.Sand, TileID.HardenedSand).Output(dictionary));
                 int sandCount = dictionary[TileID.Sand] + dictionary[TileID.HardenedSand];
 
-                if (sandCount > 100 && WorldGen.InWorld(x, y, 28))
+                if (sandCount > 100 && WorldGen.InWorld(x, y, 28) && GenVars.structures.CanPlace(new Rectangle(point.X - 14, point.Y, 28, 24), 4))
                 {
-                    //Do the worldgen here
-
                     ShapeData moundShapeData = new ShapeData();
                     ShapeData baseShapeData = new ShapeData();              
 
@@ -104,11 +94,11 @@ namespace DesertExpansion.Systems.WorldGeneration
 
                     // Added sandstone for texture
                     WorldUtils.Gen(stonePoint, new Shapes.Circle(10, 10), Actions.Chain(new Modifiers.Blotches(1, 0.4), new Modifiers.Dither(0.4), new Actions.SetTile(TileID.Sandstone), new Actions.SetFrames(frameNeighbors: true).Output(moundShapeData)));
-                    WorldUtils.Gen(stonePoint, new Shapes.Circle(10, 10), Actions.Chain(new Modifiers.Blotches(1, 0.4), new Actions.PlaceWall(WallID.Sandstone), new Actions.SetFrames(frameNeighbors: true).Output(moundShapeData)));     
+                    WorldUtils.Gen(stonePoint, new Shapes.Circle(10, 10), Actions.Chain(new Modifiers.Blotches(1, 0.4), new Actions.PlaceWall(WallID.Sandstone), new Actions.SetFrames(frameNeighbors: true).Output(moundShapeData)));
 
-                    GenVars.structures.AddProtectedStructure(new Rectangle(point.X - 14, point.Y, 28, 24), 4);
                     success = true;
 
+                    GenVars.structures.AddProtectedStructure(new Rectangle(point.X - 14, point.Y, 28, 24), 4);
                     DesertHousePass.MoundPoints.Add(point);
 
                     break;
@@ -128,7 +118,7 @@ namespace DesertExpansion.Systems.WorldGeneration
 
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = DesertStructureSystem.DesertExpansionWorldgenPassMessage2.Value;           
+            progress.Message = DesertStructureSystem.DesertHouseMessage.Value;           
 
             foreach (var point in MoundPoints)
             {

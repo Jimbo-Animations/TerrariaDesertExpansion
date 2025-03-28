@@ -1,1 +1,1 @@
-Modify this file with a description of your mod.
+A mod that, as you may have already guessed, expands the Desert of Terraria. Includes new items, enemies, world generation, and even special encounters! It's balanced around casual play, so don't expect high difficulty. *Should* be Multiplayer compatible, but further testing is required.

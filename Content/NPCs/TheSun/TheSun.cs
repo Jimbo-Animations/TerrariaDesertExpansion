@@ -1,6 +1,6 @@
 ﻿using Terraria.GameContent.Bestiary;
 
-namespace DesertExpansion.Content.NPCs.TheSun
+namespace TerrariaDesertExpansion.Content.NPCs.TheSun
 {
     partial class TheSun : ModNPC
     {
@@ -51,7 +51,7 @@ namespace DesertExpansion.Content.NPCs.TheSun
         {
             Texture2D texture = Request<Texture2D>(Texture).Value;
             Texture2D texture2 = Request<Texture2D>(Texture + "Ring").Value;
-            Texture2D glow1 = Request<Texture2D>("DesertExpansion/Content/ExtraAssets/Glow_1").Value;
+            Texture2D glow1 = Request<Texture2D>("TerrariaDesertExpansion/Content/ExtraAssets/Glow_1").Value;
 
             Vector2 drawOrigin = new Vector2(NPC.frame.Width * 0.5f, NPC.frame.Height * 0.5f);
             Vector2 drawPos = NPC.Center - screenPos;

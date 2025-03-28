@@ -2,7 +2,7 @@
 
 Items: {
 	BasicestSword: {
-		DisplayName: "Basicest Sword"
+		DisplayName: Basicest Sword
 		Tooltip:
 			'''
 			Template of an item
@@ -10,4 +10,53 @@ Items: {
 			It's snowing on Mt.Fuji
 			'''
 	}
+
+	SerpentFang: {
+		DisplayName: Serpent Fang
+		Tooltip: ""
+	}
+
+	CactusStaff: {
+		DisplayName: Cactus Staff
+		Tooltip: ""
+	}
+
+	SpittingSerpentScepter: {
+		DisplayName: Spitting Serpent Scepter
+		Tooltip: ""
+	}
+
+	HauntedUrnPlaceable: {
+		DisplayName: Haunted Urn Placeable
+		Tooltip: ""
+	}
+
+	EvilSnakeBannerItem.DisplayName: Evil Snake Banner Item
+}
+
+WorldGen: {
+	DesertUrnMessage: Generating Urns
+	DesertHouseMessage: Generating Cactus House
+	DesertMoundMessage: Generating Desert Hill
+}
+
+NPCs: {
+	MegaCactusSlime.DisplayName: Mega Cactus Slime
+	TheSun.DisplayName: The Sun
+	Cactoid.DisplayName: Cactoid
+	CactusSlimeIdle.DisplayName: Cactus Slime Idle
+	EvilSnake.DisplayName: Evil Snake
+	ScarabSpirit.DisplayName: Scarab Spirit
+	CorruptCactoid.DisplayName: Corrupt Cactoid
+	CrimsonCactoid.DisplayName: Crimson Cactoid
+}
+
+Projectiles: {
+	CactusStaffSentry.DisplayName: Cactus Staff Sentry
+	CactusStaffSpike.DisplayName: Cactus Staff Spike
+	ScepterBite.DisplayName: Scepter Bite
+	ScepterSpit.DisplayName: Scepter Spit
+	CactusSlimeShockwave.DisplayName: Cactus Slime Shockwave
+	CactusSlimeSpike.DisplayName: Cactus Slime Spike
+	EvilSnakeBite.DisplayName: Evil Snake Bite
 }

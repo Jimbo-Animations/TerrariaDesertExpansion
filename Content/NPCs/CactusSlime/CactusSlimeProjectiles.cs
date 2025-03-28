@@ -69,7 +69,7 @@
 
     class CactusSlimeShockwave : ModProjectile
     {
-        public override string Texture => "DesertExpansion/Content/ExtraAssets/Glow_1";
+        public override string Texture => "TerrariaDesertExpansion/Content/ExtraAssets/Glow_1";
 
         public override void SetDefaults()
         {

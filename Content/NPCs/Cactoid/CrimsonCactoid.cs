@@ -1,10 +1,11 @@
-﻿using Terraria.GameContent;
-using Terraria.GameContent.Bestiary;
+﻿using Terraria.GameContent.Bestiary;
+using Terraria.GameContent;
 using TerrariaDesertExpansion.Systems.GlobalNPCs;
+using TerrariaDesertExpansion.Content.NPCs.CactusSlime;
 
 namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
 {
-    class Cactoid : ModNPC
+    class CrimsonCactoid : ModNPC
     {
         public ref float AITimer => ref NPC.ai[1];
         public ref float AIRandomizer => ref NPC.ai[2];
@@ -19,7 +20,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
         {
             Idle = 0,
             Walking = 1,
-            Jumping = 2,
+            Spitting = 2,
         }
 
         private AttackPattern AIstate
@@ -32,7 +33,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
-                new FlavorTextBestiaryInfoElement("Nocturnal desert wanderers; cactoids are known for their sporadic, unpredictable nature and deceptively dexterous capabilities. It's best to keep your distance from them if you can.")
+                new FlavorTextBestiaryInfoElement(".")
             });
         }
 
@@ -53,14 +54,14 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
             NPC.height = 52;
             NPC.defense = 8;
             NPC.damage = 20;
-            NPC.lifeMax = 80;
-            NPC.knockBackResist = .5f;
+            NPC.lifeMax = 90;
+            NPC.knockBackResist = .48f;
             NPC.npcSlots = 1f;
             NPC.noGravity = false;
             NPC.noTileCollide = false;
 
-            NPC.HitSound = SoundID.NPCHit47;
-            NPC.DeathSound = SoundID.NPCDeath49;
+            NPC.HitSound = SoundID.NPCHit47 with { Pitch = -0.15f };
+            NPC.DeathSound = SoundID.NPCDeath49 with { Pitch = -0.15f };
             NPC.value = Item.buyPrice(0, 0, 0, 5);
         }
 
@@ -96,7 +97,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
             {
                 NPC.frame.X = 0;
 
-                if (NPC.frameCounter >= 6)
+                if (NPC.frameCounter >= 7)
                 {
                     NPC.frameCounter = 0;
                     NPC.frame.Y += frameHeight;
@@ -118,7 +119,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
         public override void AI()
         {
             if (contactDamage == 0) contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 80 : 60 : 40 : 20;
-            if (knockBack == 0) knockBack = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? .35f : .4f : .45f : .5f;
+            if (knockBack == 0) knockBack = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? .33f : .38f : .43f : 48f;
 
             NPC.knockBackResist = bigJumping ? 0 : knockBack;
 
@@ -140,7 +141,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
                 else animState = 0;
                 NPC.rotation = NPC.rotation.AngleTowards(0, .01f);
 
-                if (bigJumping) 
+                if (bigJumping)
                 {
                     SoundEngine.PlaySound(SoundID.DeerclopsStep with { Pitch = .2f }, NPC.Center);
                     bigJumping = false;
@@ -152,21 +153,51 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
                 NPC.rotation = NPC.velocity.Y < 0 ? NPC.rotation = NPC.rotation.AngleTowards(NPC.velocity.X * .04f, .01f) : NPC.rotation.AngleTowards(-NPC.velocity.X * .04f, .01f);
             }
 
-            NPC.spriteDirection = NPC.direction = target.Center.X > NPC.Center.X ? 1 : -1;
+            NPC.spriteDirection = NPC.direction = target.Center.X > NPC.Center.X ? 1 : -1; if (contactDamage == 0) contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 88 : 66 : 44 : 22;
+
+            if (NPC.target < 0 || NPC.target == 255 || target.dead || !target.active)
+                NPC.TargetClosest();
+
+            if (soundCooldown > 0 && NPC.ai[0] != 0) soundCooldown--;
+
+            if (soundCooldown <= 0 && Main.rand.NextBool(100) && NPC.ai[0] != 0)
+            {
+                SoundEngine.PlaySound(SoundID.Zombie79 with { Pitch = -0.15f }, NPC.Center);
+                soundCooldown = 300;
+                NPC.netUpdate = true;
+            }
+
+            if (NPC.ai[0] == 2) animState = 2;
+            else
+            {
+                if (NPC.collideY || NPC.velocity.Y == 0)
+                {
+                    if (NPC.ai[0] == 1 && NPC.velocity.X != 0) animState = 1;
+                    else animState = 0;
+                    NPC.rotation = NPC.rotation.AngleTowards(0, .01f);
+                }
+                else
+                {
+                    animState = 2;
+                    NPC.rotation = NPC.velocity.Y < 0 ? NPC.rotation = NPC.rotation.AngleTowards(NPC.velocity.X * .04f, .01f) : NPC.rotation.AngleTowards(-NPC.velocity.X * .04f, .01f);
+                }
+
+                NPC.spriteDirection = NPC.direction = target.Center.X > NPC.Center.X ? 1 : -1;
+            }
 
             switch (AIstate)
             {
                 case AttackPattern.Idle:
 
-                    if (NPC.Distance(target.Center) < 200) AITimer++;
+                    if (NPC.Distance(target.Center) < 250) AITimer++;
 
                     if (NPC.damage > 0) NPC.damage = 0;
 
-                    if (AITimer > 200 + AIRandomizer)
+                    if (AITimer > 120 + AIRandomizer)
                     {
                         NPC.ai[0] = 1;
                         NPC.damage = contactDamage;
-                        SoundEngine.PlaySound(SoundID.Zombie80 with { PitchVariance = 0.5f }, NPC.Center);
+                        SoundEngine.PlaySound(SoundID.Zombie80 with { PitchVariance = 0.4f, Pitch = -0.15f }, NPC.Center);
                         CombatText.NewText(NPC.getRect(), new Color(250, 50, 50), "!", true, false);
 
                         ResetVars();
@@ -178,9 +209,9 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
 
                     AITimer++;
 
-                    ImprovedFighterAI.CustomizableFighterAI(NPC, target, 2, 0.2f, 0.99f, 4, true, 60, 60, 120);
+                    ImprovedFighterAI.CustomizableFighterAI(NPC, target, 1.5f, 0.12f, 0.99f, 6, true, 75, 45, 90);
 
-                    if (AITimer > 300 + AIRandomizer && (NPC.collideY || NPC.velocity.Y == 0))
+                    if (AITimer > 200 + AIRandomizer && (NPC.collideY || NPC.velocity.Y == 0))
                     {
                         NPC.ai[0] = 2;
                         ResetVars();
@@ -188,30 +219,42 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
 
                     break;
 
-                case AttackPattern.Jumping:
+                case AttackPattern.Spitting:
 
                     AITimer++;
 
-                    if (AITimer >= 20)
+                    if (AITimer < 15) NPC.velocity.X *= .9f;
+
+                    if (AITimer >= 15 && !bigJumping)
                     {
                         SoundEngine.PlaySound(SoundID.DD2_JavelinThrowersAttack, NPC.Center);
-                        AfterImageOpacity = 1;
+
                         bigJumping = true;
+                        NPC.velocity += new Vector2(NPC.direction, -8);
 
-                        NPC.velocity = new Vector2(MathHelper.Clamp((NPC.Center.X - target.Center.X) / (75 * -NPC.direction), 4, 8) * NPC.direction, MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -15, -10f));
-                        NPC.ai[0] = 1;
-
-                        for (int i = 0; i < 20; i++)
+                        for (int i = 0; i < 10; i++)
                         {
-                            int dust = Dust.NewDust(BasicUtils.findGroundUnder(NPC.Center + new Vector2(Main.rand.NextFloat(-30, 31), 0)) , 0, 0, 124, Scale: 1f);
+                            int dust = Dust.NewDust(BasicUtils.findGroundUnder(NPC.Center + new Vector2(Main.rand.NextFloat(-30, 31), 0)), 0, 0, 115, Scale: 1f);
                             Main.dust[dust].noGravity = false;
                             Main.dust[dust].noLight = true;
                             Main.dust[dust].velocity = new Vector2(0, Main.rand.NextFloat(-4, 0));
                         }
+                    }
 
+                    if (bigJumping && NPC.velocity.Y >= 0)
+                    {
+                        NPC.velocity.X -= NPC.direction * 2;
+                        SoundEngine.PlaySound(SoundID.NPCDeath1 with { PitchVariance = 0.4f, Pitch = -0.15f }, NPC.Center);
+
+                        for (int i = 0; i < 3; i++)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, NPC.DirectionTo(target.Top).RotatedByRandom(MathHelper.ToRadians(5)) * 10, ProjectileID.BloodShot, 11, 2f, Main.myPlayer);
+                        }
+
+                        NPC.netUpdate = true;
+                        NPC.ai[0] = 1;
                         ResetVars();
                     }
-                    else NPC.velocity.X *= .9f;
 
                     break;
             }
@@ -232,7 +275,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
                 NPC.ai[0] = 1;
                 NPC.damage = contactDamage;
 
-                SoundEngine.PlaySound(SoundID.Zombie80 with { PitchVariance = 0.5f }, NPC.Center);
+                SoundEngine.PlaySound(SoundID.Zombie80 with { PitchVariance = 0.5f, Pitch = -0.3f }, NPC.Center);
                 CombatText.NewText(NPC.getRect(), new Color(250, 50, 50), "!", true, false);
 
                 ResetVars();
@@ -241,18 +284,18 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
             int numDusts = 5;
             for (int i = 0; i < numDusts; i++)
             {
-                int dust = Dust.NewDust(NPC.position, NPC.width, NPC.height, 40, newColor: Color.White, Scale: 1.5f);
+                int dust = Dust.NewDust(NPC.position, NPC.width, NPC.height, 115, newColor: Color.White, Scale: 1.5f);
                 Main.dust[dust].noLight = true;
                 Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(-2.0f, 2.1f), Main.rand.NextFloat(-2.0f, 2.1f));
             }
         }
 
-
+        public float stretchHeight = 1;
         public float AfterImageOpacity;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D texture = Request<Texture2D>(Texture).Value;           
-            Vector2 drawOrigin = new Vector2(NPC.frame.Width * 0.5f, NPC.frame.Height);
+            Texture2D texture = Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = new Vector2(NPC.frame.Width * 0.5f, NPC.frame.Height * 0.5f);
             Vector2 drawPos = NPC.Center - screenPos;
 
             SpriteEffects effects = new SpriteEffects();

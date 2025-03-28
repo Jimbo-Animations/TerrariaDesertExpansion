@@ -16,7 +16,7 @@ using Terraria.ObjectData;
 
 //Code made by Gabehaswon
 
-namespace DesertExpansion.Systems.Utilities
+namespace TerrariaDesertExpansion.Systems.Utilities
 {
     /// <summary>
     /// Apply this to a ModNPC's class to autoload their items as NPCNameBanner and NPCNameBannerItem.

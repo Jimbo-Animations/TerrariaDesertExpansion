@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DesertExpansion.Systems.Utilities;
 using Terraria.DataStructures;
 
 namespace TerrariaDesertExpansion.Content.Items.Weapons

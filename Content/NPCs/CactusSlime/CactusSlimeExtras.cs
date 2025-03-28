@@ -1,11 +1,9 @@
-﻿using DesertExpansion.Systems;
-using Terraria;
-using Terraria.GameContent.Bestiary;
+﻿using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
-using TerrariaDesertExpansion.Content.NPCs.CactusSlime;
+using TerrariaDesertExpansion.Systems;
 
-namespace DesertExpansion.Content.NPCs.CactusSlime
+namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 {
     partial class MegaCactusSlime : ModNPC
     {
@@ -63,6 +61,7 @@ namespace DesertExpansion.Content.NPCs.CactusSlime
 
         public bool isGrounded;
         public int contactDamage;
+        public int jumpDuration;
         public float auraAlpha;
         public float stretchWidth = 1;
         public float stretchHeight = 1;
@@ -75,7 +74,7 @@ namespace DesertExpansion.Content.NPCs.CactusSlime
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            int numDusts = 3;
+            int numDusts = 5;
             for (int i = 0; i < numDusts; i++)
             {
                 int dust = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.t_Slime, newColor: Color.LightGreen, Scale: 1);
@@ -88,16 +87,16 @@ namespace DesertExpansion.Content.NPCs.CactusSlime
             {
                 for (int i = 0; i < 8; i++)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(0, -Main.rand.NextFloat(3, 6)).RotatedByRandom(MathHelper.PiOver2), ProjectileType<CactusSlimeSpike>(), 0, 2f, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(0, -Main.rand.NextFloat(4, 8)).RotatedByRandom(MathHelper.PiOver2), ProjectileType<CactusSlimeSpike>(), 0, 2f, Main.myPlayer);
                 }
 
-                numDusts = 25;
+                numDusts = 50;
                 for (int i = 0; i < numDusts; i++)
                 {
                     int dust = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.t_Slime, newColor: Color.LightGreen, Scale: 2);
                     Main.dust[dust].noLight = true;
                     Main.dust[dust].alpha = 180;
-                    Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(-2.0f, 2.1f), Main.rand.NextFloat(-2.0f, 2.1f));
+                    Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, 4));
                 }
 
                 NPC.netUpdate = true;
@@ -118,7 +117,17 @@ namespace DesertExpansion.Content.NPCs.CactusSlime
             contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 60 : 50 : 40 : 30;
             AIModifier = Main.expertMode ? Main.getGoodWorld ? 0.6f : 0.8f : 1;
 
-            if (NPC.velocity.Y > 0 && !isGrounded) NPC.velocity.X += 0.001f * -goalDirection;
+            if (NPC.velocity.Y > 0 && !isGrounded) 
+            {
+                NPC.velocity.X += 0.001f * -goalDirection;
+                jumpDuration++;
+
+                if (jumpDuration > 45)
+                {
+                    NPC.ai[0] = 4;
+                    resetVars();
+                }
+            }
 
             if (NPC.velocity.Y > 0 && NPC.collideY && !isGrounded)
             {

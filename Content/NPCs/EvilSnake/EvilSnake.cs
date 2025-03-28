@@ -2,12 +2,11 @@
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using TerrariaDesertExpansion.Content.Items.Materials;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
 {
     [AutoloadBanner]
-    internal class EvilSnake : ModNPC
+    class EvilSnake : ModNPC
     {
         private int attackCooldown
         {
@@ -47,7 +46,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
             NPC.width = 52;
             NPC.height = 42;
             NPC.defense = 4;
-            NPC.damage = 30;
+            NPC.damage = 20;
             NPC.lifeMax = 50;
             NPC.knockBackResist = 0f;
             NPC.npcSlots = 1f;
@@ -56,7 +55,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
 
             NPC.HitSound = SoundID.NPCHit23;
             NPC.DeathSound = SoundID.NPCDeath26;
-            NPC.value = Item.buyPrice(0, 0, 1, 0);
+            NPC.value = Item.buyPrice(0, 0, 0, 5);
         }
 
         int animState;
@@ -111,7 +110,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
 
         public override void AI()
         {
-            contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 60 : 50 : 40 : 30;
+            if (contactDamage == 0) contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 80 : 60 : 40 : 20;
 
             if (NPC.target < 0 || NPC.target == 255 || target.dead || !target.active)
                 NPC.TargetClosest();
@@ -121,12 +120,13 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
             if (attackCooldown > 0) attackCooldown--;
             if (soundCooldown > 0) soundCooldown--;
 
-            shouldBite = attackCooldown <= 0 && NPC.HasValidTarget && Systems.Utilities.BasicUtils.CloseTo(NPC.Center.X, target.Center.X, 88) && Systems.Utilities.BasicUtils.CloseTo(NPC.Center.Y, target.Center.Y, 40);
+            shouldBite = attackCooldown <= 0 && NPC.HasValidTarget && BasicUtils.CloseTo(NPC.Center.X, target.Center.X, 88) && BasicUtils.CloseTo(NPC.Center.Y, target.Center.Y, 40);
 
-            if (soundCooldown == 0 && Main.rand.NextBool(100))
+            if (soundCooldown <= 0 && Main.rand.NextBool(150))
             {
                 SoundEngine.PlaySound(SoundID.Item151, NPC.Center);
-                soundCooldown = 200;
+                soundCooldown = 300;
+                NPC.netUpdate = true;
             }
         }
 
@@ -173,57 +173,59 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
 
             return false;
         }
-        class EvilSnakeBite : ModProjectile
+    }
+
+    class EvilSnakeBite : ModProjectile
+    {
+        public override void SetStaticDefaults()
         {
-            public override void SetStaticDefaults()
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+        }
+
+        public override void SetDefaults()
+        {
+            Projectile.Size = new Vector2(20);
+            Projectile.tileCollide = false;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = false;
+            Projectile.timeLeft = 30;
+        }
+
+        public override void AI()
+        {
+            Projectile.rotation = Projectile.velocity.ToRotation();
+            Projectile.velocity *= 0.95f;
+
+            Projectile.spriteDirection = Projectile.velocity.X > 0 ? -1 : 1;
+
+            if (Projectile.timeLeft <= 20) opacity *= 0.92f;
+
+            if (Projectile.timeLeft <= 10) Projectile.hostile = false;
+        }
+
+        public float opacity = 1;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+            Rectangle frame = new Rectangle(0, texture.Height / Main.projFrames[Projectile.type] * Projectile.frame, texture.Width, texture.Height / Main.projFrames[Projectile.type]);
+
+            SpriteEffects effects = new SpriteEffects();
+            if (Projectile.spriteDirection == 1) effects = SpriteEffects.FlipVertically;
+
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
-                ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+                Main.EntitySpriteDraw(texture, Projectile.oldPos[i] - Projectile.position + Projectile.Center - Main.screenPosition, frame, Color.White * (1 - i / (float)Projectile.oldPos.Length) * 0.99f * opacity, Projectile.rotation, drawOrigin, Projectile.scale * (1f - i / Projectile.oldPos.Length) * 0.99f, effects, 0);
             }
 
-            public override void SetDefaults()
-            {
-                Projectile.Size = new Vector2(20);
-                Projectile.tileCollide = false;
-                Projectile.hostile = true;
-                Projectile.ignoreWater = false;
-                Projectile.timeLeft = 30;
-            }
+            return false;
+        }
 
-            public override void AI()
-            {
-                Projectile.rotation = Projectile.velocity.ToRotation();
-                Projectile.velocity *= 0.95f;
-
-                Projectile.spriteDirection = Projectile.velocity.X > 0 ? -1 : 1;
-
-                if (Projectile.timeLeft <= 20) opacity *= 0.92f;
-
-                if (Projectile.timeLeft <= 10) Projectile.hostile = false;
-            }
-
-            public float opacity = 1;
-            public override bool PreDraw(ref Color lightColor)
-            {
-                Texture2D texture = Request<Texture2D>(Texture).Value;
-                Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-                Rectangle frame = new Rectangle(0, texture.Height / Main.projFrames[Projectile.type] * Projectile.frame, texture.Width, texture.Height / Main.projFrames[Projectile.type]);
-
-                SpriteEffects effects = new SpriteEffects();
-                if (Projectile.spriteDirection == 1) effects = SpriteEffects.FlipVertically;
-
-                for (int i = 0; i < Projectile.oldPos.Length; i++)
-                {
-                    Main.EntitySpriteDraw(texture, Projectile.oldPos[i] - Projectile.position + Projectile.Center - Main.screenPosition, frame, Color.White * (1 - i / (float)Projectile.oldPos.Length) * 0.99f * opacity, Projectile.rotation, drawOrigin, Projectile.scale * (1f - i / Projectile.oldPos.Length) * 0.99f, effects, 0);
-                }
-
-                return false;
-            }
-
-            public override void OnHitPlayer(Player target, Player.HurtInfo info)
-            {
-                target.AddBuff(BuffID.Venom, 60);
-            }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.Venom, 60);
         }
     }
+
 }
