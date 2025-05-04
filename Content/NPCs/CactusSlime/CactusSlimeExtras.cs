@@ -1,6 +1,9 @@
 ﻿using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
+using TerrariaDesertExpansion.Content.Items.Equips;
+using TerrariaDesertExpansion.Content.Items.Materials;
+using TerrariaDesertExpansion.Content.Items.Weapons;
 using TerrariaDesertExpansion.Systems;
 
 namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
@@ -13,6 +16,11 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
                 new FlavorTextBestiaryInfoElement("This gluttonous slime consumed too much cactus, and has developed a botanical form. The spikes it grows within are formed out of gel, using the fibers absorbed from its favorite food.")
             });
+        }
+
+        public override void BossHeadRotation(ref float rotation)
+        {
+            rotation = NPC.rotation;
         }
 
         public override void FindFrame(int frameHeight)
@@ -66,10 +74,13 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
         public float stretchWidth = 1;
         public float stretchHeight = 1;
         public Vector2 goalPosition;
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ItemID.Cactus, 1, 5, 10));
-            npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 10, 20));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Cactus, 1, 15, 20));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 20, 30));
+            npcLoot.Add(ItemDropRule.Common(ItemType<SandShaker>(), 1));
+            npcLoot.Add(ItemDropRule.Common(ItemType<CactusLamp>(), 1));
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -122,7 +133,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                 NPC.velocity.X += 0.001f * -goalDirection;
                 jumpDuration++;
 
-                if (jumpDuration > 45)
+                if (jumpDuration > 200)
                 {
                     NPC.ai[0] = 4;
                     resetVars();
@@ -148,6 +159,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             if (isGrounded)
             {
                 NPC.rotation = 0;
+                jumpDuration = 0;
+
                 if (NPC.ai[0] == 2)
                 {
                     SlimeSquish(1 + (float)Math.Sin(AITimer / 4) * 0.25f, 1 - (float)Math.Sin(AITimer / 4) * 0.25f);
@@ -166,6 +179,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             AITimer = 0;
             AIModifier = 0;
             MovementTracker = 0;
+            jumpDuration = 0;
             NPC.netUpdate = true;
         }
 

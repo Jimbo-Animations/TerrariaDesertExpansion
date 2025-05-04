@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
-using TerrariaDesertExpansion.Systems.WorldGeneration;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.WorldBuilding;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.GameContent.Generation;
 using TerrariaDesertExpansion.Content.Tiles;
 using Terraria.DataStructures;
-
+/*
 namespace TerrariaDesertExpansion.Systems.WorldGeneration
 {
     public class DesertUrn : ModSystem
@@ -94,3 +89,4 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
         }
     }
 }
+*/

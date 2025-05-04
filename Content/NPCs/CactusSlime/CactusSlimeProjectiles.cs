@@ -53,10 +53,8 @@
             Vector2 rotationVector = (Projectile.rotation - MathHelper.ToRadians(90f)).ToRotationVector2();
             usePos += rotationVector * 16f;
 
-            // Spawn some dusts upon javelin death
             for (int i = 0; i < 7; i++)
             {
-                // Create a new dust
                 Dust dust = Dust.NewDustDirect(usePos, Projectile.width, Projectile.height, 291);
                 dust.position = (dust.position + Projectile.Center) / 2f;
                 dust.velocity += rotationVector * 2f;

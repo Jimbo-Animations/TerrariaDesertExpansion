@@ -58,7 +58,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.TheSun
             SpriteEffects effects = SpriteEffects.FlipHorizontally;
             Rectangle RingRect = new Rectangle(0, ringFrame, NPC.frame.Width, NPC.frame.Height);
 
-
             float glowMult = (float)Math.Sin(Main.GlobalTimeWrappedHourly) * 0.15f;
             rotationTimer += .075f;
             if (rotationTimer >= MathHelper.Pi) rotationTimer = 0f;

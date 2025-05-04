@@ -10,7 +10,6 @@
 
 	<!-- References -->
 	<ItemGroup>
-	  <Folder Include="Content\Items\Equips\" />
 	  <Folder Include="Content\Items\Placeables\" />
 	  <Folder Include="Content\Items\Tools\" />
 	  <Folder Include="Content\Projectiles\" />

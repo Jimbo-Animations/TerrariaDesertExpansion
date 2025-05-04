@@ -40,6 +40,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPC.noTileCollide = false;
             NPC.HitSound = SoundID.NPCHit1 with { Volume = 2, Pitch = -.2f };
             NPC.DeathSound = SoundID.NPCDeath1 with { Volume = 2, Pitch = -.2f };
+
+            Music = MusicLoader.GetMusicSlot(Mod, "Content/Music/Deitys_Duel");
         }
 
         public override void AI()

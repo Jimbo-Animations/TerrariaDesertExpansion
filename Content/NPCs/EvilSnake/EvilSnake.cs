@@ -138,6 +138,18 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
                 int dust = Dust.NewDust(NPC.position, NPC.width, NPC.height, 5, newColor: Color.White, Scale: 1);
                 Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(-1.0f, 1.1f), Main.rand.NextFloat(-1.0f, 1.1f));
             }
+
+            if (NPC.life <= 0)
+            {
+                int gore1 = Mod.Find<ModGore>("EvilSnakeGore1").Type;
+                int gore2 = Mod.Find<ModGore>("EvilSnakeGore2").Type;
+                int gore3 = Mod.Find<ModGore>("EvilSnakeGore3").Type;
+                int gore4 = Mod.Find<ModGore>("EvilSnakeGore4").Type;
+                Gore.NewGore(NPC.GetSource_FromThis(), NPC.Top + new Vector2(12 * NPC.direction, 0), new Vector2(6 * -NPC.direction, - 6).RotatedByRandom(MathHelper.ToRadians(10)), gore1);
+                Gore.NewGore(NPC.GetSource_FromThis(), NPC.Bottom - new Vector2(12 * NPC.direction, 0), new Vector2(4 * -NPC.direction, 0).RotatedByRandom(MathHelper.ToRadians(10)), gore2);
+                Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center, new Vector2(1 * NPC.direction, -1).RotatedByRandom(MathHelper.ToRadians(10)), gore3);
+                Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, gore4);
+            }
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

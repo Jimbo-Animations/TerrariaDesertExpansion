@@ -1,9 +1,11 @@
 ﻿using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using TerrariaDesertExpansion.Systems.GlobalNPCs;
 
 namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
 {
+    [AutoloadBanner]
     class CorruptCactoid : ModNPC
     {
         public ref float AITimer => ref NPC.ai[1];
@@ -51,9 +53,9 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
             NPC.aiStyle = -1;
             NPC.width = 38;
             NPC.height = 52;
-            NPC.defense = 8;
-            NPC.damage = 22;
-            NPC.lifeMax = 80;
+            NPC.defense = Main.hardMode && Main.expertMode ? 16 : 8;
+            NPC.damage = Main.hardMode && Main.expertMode ? 44 : 22;
+            NPC.lifeMax = Main.hardMode && Main.expertMode ? 160 : 80;
             NPC.knockBackResist = .5f;
             NPC.npcSlots = 1f;
             NPC.noGravity = false;
@@ -66,7 +68,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.ZoneDesert && !Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return 0.3f;
+            if (spawnInfo.Player.ZoneCorrupt && !Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Ebonsand && !spawnInfo.Water) return 0.3f;
             else return 0f;
         }
 
@@ -116,8 +118,11 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
 
         public override void AI()
         {
-            if (contactDamage == 0) contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 88 : 66 : 44 : 22;
-
+            if (contactDamage == 0)
+            {
+                contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 88 : 66 : 44 : 22;
+                if (Main.hardMode && Main.expertMode) contactDamage *= 2;
+            }
             if (NPC.target < 0 || NPC.target == 255 || target.dead || !target.active)
                 NPC.TargetClosest();
 
@@ -186,44 +191,53 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
 
                     AITimer++;
 
-                    if (AITimer == 1)
+                    if (AITimer >= 20)
                     {
-                        NPC.damage = 0;
-                        NPC.dontTakeDamage = true;
-                        rollDir = NPC.Distance(target.Center) <= 150 && Main.rand.NextBool(2) ? -NPC.direction : NPC.direction;
+                        if (AITimer == 20)
+                        {
+                            NPC.damage = 0;
+                            NPC.dontTakeDamage = true;
+                            rollDir = NPC.Distance(target.Center) <= 150 && Main.rand.NextBool(2) ? -NPC.direction : NPC.direction;
 
-                        NPC.velocity.X = 6.4f * rollDir;
+                            NPC.velocity.X = 6.4f * rollDir;
 
-                        AfterImageOpacity = 1;
-                        SoundEngine.PlaySound(SoundID.DD2_JavelinThrowersAttack with { Pitch = -0.3f }, NPC.Center);
+                            AfterImageOpacity = 1;
+                            SoundEngine.PlaySound(SoundID.DD2_JavelinThrowersAttack with { Pitch = -0.3f }, NPC.Center);
+                        }
+
+                        NPC.rotation += .2512f * rollDir;
+                        NPC.velocity.Y += .1f;
+
+                        if (Main.rand.NextBool())
+                        {
+                            int dust = Dust.NewDust(BasicUtils.findGroundUnder(NPC.Center + new Vector2(Main.rand.NextFloat(-30, 31), 0)), 0, 0, 14, Scale: 1f);
+                            Main.dust[dust].noGravity = false;
+                            Main.dust[dust].noLight = true;
+                            Main.dust[dust].velocity = new Vector2(0, Main.rand.NextFloat(-4, 0));
+                        }
+
+                        if (Collision.SolidCollision(NPC.position + new Vector2(NPC.width * NPC.direction, 0), NPC.width, NPC.height)) NPC.position.Y -= 8;
+
+                        if (NPC.rotation > MathHelper.TwoPi || NPC.rotation < -MathHelper.TwoPi)
+                        {
+                            NPC.rotation = 0;
+                            NPC.damage = contactDamage;
+                            NPC.dontTakeDamage = false;
+                            NPC.velocity.X *= .5f;
+
+                            NPC.ai[0] = 1;
+
+                            ResetVars();
+                        }
+                    }
+                    else
+                    {
+                        NPC.velocity.X *= .9f;
+
+                        if (AITimer == 1) SoundEngine.PlaySound(SoundID.Item154, NPC.Center);
                     }
 
-                    NPC.rotation += .2512f * rollDir;
-                    NPC.velocity.Y += .1f;
-
-                    if (Main.rand.NextBool())
-                    {
-                        int dust = Dust.NewDust(BasicUtils.findGroundUnder(NPC.Center + new Vector2(Main.rand.NextFloat(-30, 31), 0)), 0, 0, 14, Scale: 1f);
-                        Main.dust[dust].noGravity = false;
-                        Main.dust[dust].noLight = true;
-                        Main.dust[dust].velocity = new Vector2(0, Main.rand.NextFloat(-4, 0));
-                    }
-
-                    if (Collision.SolidCollision(NPC.position + new Vector2(NPC.width * NPC.direction, 0), NPC.width, NPC.height)) NPC.position.Y -= 8;
-
-                    if (NPC.rotation > MathHelper.TwoPi || NPC.rotation < -MathHelper.TwoPi)
-                    {
-                        NPC.rotation = 0;
-                        NPC.damage = contactDamage;
-                        NPC.dontTakeDamage = false;
-                        NPC.velocity.X *= .5f;
-
-                        NPC.ai[0] = 1;
-
-                        ResetVars();
-                    }
-
-                    break;
+                        break;
             }
         }
 
@@ -248,16 +262,29 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
                 ResetVars();
             }
 
-            int numDusts = 5;
+            int numDusts = 3;
             for (int i = 0; i < numDusts; i++)
             {
                 int dust = Dust.NewDust(NPC.position, NPC.width, NPC.height, 17, newColor: Color.White, Scale: 1.5f);
                 Main.dust[dust].noLight = true;
                 Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(-2.0f, 2.1f), Main.rand.NextFloat(-2.0f, 2.1f));
             }
+
+            if (NPC.life <= 0)
+            {
+                int gore1 = Mod.Find<ModGore>("CorruptCactoidGore1").Type;
+                int gore2 = Mod.Find<ModGore>("CorruptCactoidGore2").Type;
+                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position - new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore1);
+                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position + new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore2);
+            }
         }
 
-        public float stretchHeight = 1;
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ItemID.Cactus, 1, 4, 8));
+            npcLoot.Add(ItemDropRule.Common(ItemID.WormTooth, 4, 1, 1));
+        }
+
         public float AfterImageOpacity;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

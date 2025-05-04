@@ -1,1 +1,10 @@
 A mod that, as you may have already guessed, expands the Desert of Terraria. Includes new items, enemies, world generation, and even special encounters! It's balanced around casual play, so don't expect high difficulty. *Should* be Multiplayer compatible, but further testing is required.
+
+Content included:
+5 new enemies
+A brand new miniboss (theme courtesy of SoundPacX)
+10 new items
+3 new crafting recipes for vanilla items
+A brand new structure on the Desert Surface
+
+More content may come in the future.

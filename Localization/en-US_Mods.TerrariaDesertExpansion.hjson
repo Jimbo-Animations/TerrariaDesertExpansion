@@ -1,37 +1,41 @@
 # This file will automatically update with entries for new content after a build and reload.
 
 Items: {
-	BasicestSword: {
-		DisplayName: Basicest Sword
-		Tooltip:
-			'''
-			Template of an item
-			Replacing this tooltip is duty 
-			It's snowing on Mt.Fuji
-			'''
-	}
-
 	SerpentFang: {
 		DisplayName: Serpent Fang
-		Tooltip: ""
+		Tooltip: Youch...
 	}
 
 	CactusStaff: {
 		DisplayName: Cactus Staff
-		Tooltip: ""
+		Tooltip: Summons Cammy the Cactus to protect an area
 	}
 
 	SpittingSerpentScepter: {
 		DisplayName: Spitting Serpent Scepter
-		Tooltip: ""
-	}
-
-	HauntedUrnPlaceable: {
-		DisplayName: Haunted Urn Placeable
-		Tooltip: ""
+		Tooltip: Launches a barrage of piercing spit that poison enemies
 	}
 
 	EvilSnakeBannerItem.DisplayName: Evil Snake Banner Item
+
+	CactusLamp: {
+		DisplayName: Cactus Lamp
+		Tooltip: Is there a light-bulb in this?
+	}
+
+	SandShaker: {
+		DisplayName: Sand Shaker
+		Tooltip:
+			'''
+			Spikes flying enemies downward
+			Performs crushing blows on grounded enemies for additional damage
+			'''
+	}
+
+	CactoidBannerItem.DisplayName: Cactoid Banner Item
+	CorruptCactoidBannerItem.DisplayName: Corrupt Cactoid Banner Item
+	CrimsonCactoidBannerItem.DisplayName: Crimson Cactoid Banner Item
+	HallowedCactoidBannerItem.DisplayName: Colorful Cactoid Banner Item
 }
 
 WorldGen: {
@@ -44,11 +48,12 @@ NPCs: {
 	MegaCactusSlime.DisplayName: Mega Cactus Slime
 	TheSun.DisplayName: The Sun
 	Cactoid.DisplayName: Cactoid
-	CactusSlimeIdle.DisplayName: Cactus Slime Idle
+	CactusSlimeIdle.DisplayName: Sleeping Slime
 	EvilSnake.DisplayName: Evil Snake
 	ScarabSpirit.DisplayName: Scarab Spirit
 	CorruptCactoid.DisplayName: Corrupt Cactoid
 	CrimsonCactoid.DisplayName: Crimson Cactoid
+	HallowedCactoid.DisplayName: Colorful Cactoid
 }
 
 Projectiles: {
@@ -59,4 +64,14 @@ Projectiles: {
 	CactusSlimeShockwave.DisplayName: Cactus Slime Shockwave
 	CactusSlimeSpike.DisplayName: Cactus Slime Spike
 	EvilSnakeBite.DisplayName: Evil Snake Bite
+	BloodSpit.DisplayName: Blood Spit
+	CactusLampPet.DisplayName: Cactus Lamp Pet
+	SandShakerProj.DisplayName: Sand Shaker
+}
+
+Buffs: {
+	CactusLampBuff: {
+		DisplayName: Cactus Lamp Buff
+		Description: Lights the way... but flickers
+	}
 }
