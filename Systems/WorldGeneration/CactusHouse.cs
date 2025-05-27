@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using Terraria.IO;
 using Terraria.Localization;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
 using TerrariaDesertExpansion.Content.Items.Weapons;
 
 namespace TerrariaDesertExpansion.Systems.WorldGeneration
 {
     public class DesertStructureSystem : ModSystem
-    {      
+    {
         public static LocalizedText DesertMoundMessage { get; private set; }
         public static LocalizedText DesertHouseMessage { get; private set; }
 
@@ -42,7 +43,7 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
         }
 
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
-        {           
+        {
             progress.Message = DesertStructureSystem.DesertMoundMessage.Value;
 
             int x = 1;
@@ -85,7 +86,7 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
                 if (sandCount > 100 && WorldGen.InWorld(x, y, 28) && GenVars.structures.CanPlace(new Rectangle(point.X - 14, point.Y, 28, 24), 4))
                 {
                     ShapeData moundShapeData = new ShapeData();
-                    ShapeData baseShapeData = new ShapeData();              
+                    ShapeData baseShapeData = new ShapeData();
 
                     // Main mound
                     WorldUtils.Gen(point, new Shapes.Mound(14, 14), Actions.Chain(new Modifiers.Blotches(1, 0.4), new Actions.SetTile(TileID.HardenedSand), new Actions.SetFrames(frameNeighbors: true).Output(moundShapeData)));
@@ -118,7 +119,7 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
 
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = DesertStructureSystem.DesertHouseMessage.Value;           
+            progress.Message = DesertStructureSystem.DesertHouseMessage.Value;
 
             foreach (var point in MoundPoints)
             {
@@ -128,7 +129,7 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
                 int houseHeight = Main.rand.Next(30, 40);
 
                 Vector2 houseGrowthPlacement1 = new(Main.rand.Next(-3, -1), Main.rand.Next(5, 8));
-                Vector2 houseGrowthPlacement2 = new( Main.rand.Next(7, 9), Main.rand.Next(5, 8));
+                Vector2 houseGrowthPlacement2 = new(Main.rand.Next(7, 9), Main.rand.Next(5, 8));
 
                 Point housePoint = new Point(point.X - 3, point.Y - houseHeight);
 
@@ -186,31 +187,59 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
                     if (chestIndex != -1)
                     {
                         Chest chest = Main.chest[chestIndex];
-                        // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                        var itemsToAdd = new List<(int type, int stack)>();
 
-                        itemsToAdd.Add((ItemID.CactusBreastplate, 1));
-                        itemsToAdd.Add((ItemID.CactusHelmet, 1));
-                        itemsToAdd.Add((ItemID.CactusLeggings, 1));
-                        itemsToAdd.Add((ItemType<CactusStaff>(), 1));
-
-                        // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                        int chestItemIndex = 0;
-                        foreach (var itemToAdd in itemsToAdd)
+                        List<Tuple<int, double>> LootTable = new List<Tuple<int, double>>()
                         {
-                            Item item = new Item();
-                            item.SetDefaults(itemToAdd.type);
-                            item.stack = itemToAdd.stack;
-                            chest.item[chestItemIndex] = item;
-                            chestItemIndex++;
-                            if (chestItemIndex >= 40)
-                                break; // Make sure not to exceed the capacity of the chest
+                            Tuple.Create((int)ItemID.ThornsPotion, 5.0),
+                            Tuple.Create((int)ItemID.SwiftnessPotion, 5.0),
+                            Tuple.Create((int)ItemID.LeadBar, 4.0),
+                            Tuple.Create((int)ItemID.PalmWood, 4.0),
+                            Tuple.Create((int)ItemID.CopperCoin, 4.0),
+                            Tuple.Create((int)ItemID.PinkPricklyPear, 3.0),
+                            Tuple.Create((int)ItemID.SilverCoin, 3.0),
+                            Tuple.Create((int)ItemID.RestorationPotion, 2.0),
+                            Tuple.Create((int)ItemID.Waterleaf, 2.0),
+                            Tuple.Create((int)ItemID.BananaSplit, 1.0),
+                            Tuple.Create((int)ItemID.None, 1.0),
+                            Tuple.Create((int)ItemID.GenderChangePotion, 0.1)
+                        };
+
+                        int chestItemIndex = 0;
+
+                        Item ChestItem = new Item();
+                        ChestItem.SetDefaults(ItemType<CactusStaff>());
+                        ChestItem.stack = 1;
+                        chest.item[chestItemIndex] = ChestItem;
+
+                        chestItemIndex++;
+
+                        for (int i = 0; i < 6; i++)
+                        {
+                            WeightedRandom<int> FunnyLoot = new WeightedRandom<int>();
+                            foreach (var item in LootTable)
+                            {
+                                FunnyLoot.Add(item.Item1, item.Item2);
+                            }
+
+                            int selectedItem = FunnyLoot.Get();
+
+                            Item RandomItem = new Item();
+
+                            if (selectedItem != ItemID.None)
+                            {
+                                RandomItem.SetDefaults(selectedItem);
+                                RandomItem.stack = (selectedItem == ItemID.BananaSplit || selectedItem == ItemID.GenderChangePotion) ? 1 : (selectedItem == ItemID.LeadBar || selectedItem == ItemID.PalmWood || selectedItem == ItemID.CopperCoin || selectedItem == ItemID.SilverCoin) ? Main.rand.Next(8, 17) : Main.rand.Next(1, 4);
+                                chest.item[chestItemIndex] = RandomItem;
+
+                                chestItemIndex++;
+                            }
+                            LootTable.RemoveAll(item => item.Item1 == selectedItem);
                         }
                     }
 
                     GenVars.structures.AddProtectedStructure(new Rectangle(housePoint.X - 3, housePoint.Y - houseHeight - 3, 12, houseHeight - 3), 4);
-                }           
-            }    
+                }
+            }
         }
     }
 }

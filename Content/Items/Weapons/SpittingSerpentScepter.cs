@@ -29,15 +29,6 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
             Item.mana = 20;
         }
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            var line = new TooltipLine(Mod, "Tooltip#0", "\"It has some toxic things to say!\"")
-            {
-                OverrideColor = new Color(120, 230, 10)
-            };
-            tooltips.Add(line);
-        }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {        
             velocity = velocity.RotatedBy(MathHelper.ToRadians(10) * -player.direction).RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(.8f, 1.3f);

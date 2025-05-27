@@ -116,7 +116,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                         }
                     }
 
-                    if (AITimer > 15 && AITimer % (15 * AIModifier) == 1)
+                    if (AITimer > 15 && AITimer % (15 * AIModifier) == 1 && Main.netMode != NetmodeID.MultiplayerClient)
                     {
                         SoundEngine.PlaySound(SoundID.Item39 with { Pitch = -.1f, Volume = 2 }, NPC.Center);
 
@@ -156,7 +156,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                         NPC.netUpdate = true;
                     }
 
-                    if (!isGrounded && NPC.velocity.Y >= 0 && MovementTracker > 0 && MovementTracker <= 1)
+                    if (!isGrounded && NPC.velocity.Y >= 0 && MovementTracker > 0 && MovementTracker <= 1 && Main.netMode != NetmodeID.MultiplayerClient)
                     {
                         SoundEngine.PlaySound(SoundID.Item42 with { Pitch = -.1f, Volume = 2.5f }, NPC.Center);
                         MovementTracker++;

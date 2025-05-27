@@ -36,6 +36,7 @@ namespace TerrariaDesertExpansion.Content.Items.Equips
         public override void SetStaticDefaults()
         {
             Main.buffNoTimeDisplay[Type] = true;
+            Main.projPet[Type] = true;
             Main.lightPet[Type] = true;
         }
 
@@ -60,6 +61,11 @@ namespace TerrariaDesertExpansion.Content.Items.Equips
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.netImportant = true;
+        }
+
+        public override bool? CanCutTiles()
+        {
+            return false;
         }
 
         bool flicker;
@@ -112,8 +118,8 @@ namespace TerrariaDesertExpansion.Content.Items.Equips
 
             float glowMult = (float)Math.Sin(Main.GlobalTimeWrappedHourly) / 30;
 
-            if (flicker) Lighting.AddLight(Projectile.Center, new Vector3(.3f, .2f, .1f));
-            else Lighting.AddLight(Projectile.Center, new Vector3(.55f + glowMult, .45f + glowMult, .225f + glowMult));
+            if (flicker) if (!Main.dedServ) Lighting.AddLight(Projectile.Center, new Vector3(.3f, .2f, .1f));
+            else if(!Main.dedServ) Lighting.AddLight(Projectile.Center, new Vector3(.55f + glowMult, .45f + glowMult, .225f + glowMult));
 
             Projectile.ai[0]++;
         }

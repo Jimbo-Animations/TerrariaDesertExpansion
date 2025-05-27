@@ -31,15 +31,6 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
             Item.shoot = ProjectileType<CactusStaffSentry>();
         }
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            var line = new TooltipLine(Mod, "Tooltip#0", "\"Some say she's a prick, but Cammy just wants her personal space.\"")
-            {
-                OverrideColor = new Color(150, 250, 50)
-            };
-            tooltips.Add(line);
-        }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             Vector2 groundPos = Main.MouseWorld.findGroundUnder();

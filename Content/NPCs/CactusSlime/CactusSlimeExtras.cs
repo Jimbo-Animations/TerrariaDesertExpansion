@@ -1,4 +1,5 @@
-﻿using Terraria.GameContent.Bestiary;
+﻿using System.IO;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
 using TerrariaDesertExpansion.Content.Items.Equips;
@@ -75,6 +76,30 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
         public float stretchHeight = 1;
         public Vector2 goalPosition;
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(isGrounded);
+            writer.Write(contactDamage);
+            writer.Write(jumpDuration);
+            writer.Write(auraAlpha);
+            writer.Write(stretchWidth);
+            writer.Write(stretchHeight);
+            writer.WriteVector2(goalPosition);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            isGrounded = reader.ReadBoolean();
+            contactDamage = reader.ReadInt32();
+            jumpDuration = reader.ReadInt32();
+            auraAlpha = reader.ReadInt32();
+            stretchWidth = reader.ReadInt32();
+            stretchHeight = reader.ReadInt32();
+            goalPosition = reader.ReadVector2();
+        }
+
+        
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ItemID.Cactus, 1, 15, 20));
@@ -116,7 +141,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
         public override void OnKill()
         {
-            Progression.DownedCactusSlime = true;
+            NPC.SetEventFlagCleared(ref Progression.DownedCactusSlime, -1);
         }
 
         public override void PostAI()

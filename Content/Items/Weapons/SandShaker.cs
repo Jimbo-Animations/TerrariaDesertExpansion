@@ -114,8 +114,8 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
                 targetAngle = MathHelper.Clamp(targetAngle, (float)Math.PI * 5 / 6, (float)Math.PI * 4 / 3);
             }
 
-            InitialAngle = targetAngle - FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection; // Otherwise, we calculate the angle
-            Size = 1f;
+            InitialAngle = targetAngle - (FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection); // Otherwise, we calculate the angle
+            Size = 1;
         }
 
         public override void SendExtraAI(BinaryWriter writer)

@@ -282,7 +282,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ItemID.Cactus, 1, 4, 8));
-            npcLoot.Add(ItemDropRule.Common(ItemID.WormTooth, 4, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.WormTooth, 2, 1, 2));
         }
 
         public float AfterImageOpacity;

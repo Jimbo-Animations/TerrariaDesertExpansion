@@ -182,19 +182,10 @@ namespace TerrariaDesertExpansion.Systems.Utilities
         {
             return from + ShortestPathToAngle(from, to) * t;
         }
+
         public static Rectangle ToRectangle(this System.Drawing.RectangleF rect)
         {
             return new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
         }    
-
-        // Used to grab textures from this mod for certain other effects.
-
-        public static Texture2D GetTexture(string path, AssetRequestMode assetRequestMode = AssetRequestMode.AsyncLoad)
-        {
-            if (path.Contains("DesertExpansion/"))
-                return Request<Texture2D>(path, assetRequestMode).Value;
-            else
-                return Request<Texture2D>("DesertExpansion/" + path, assetRequestMode).Value;
-        }
     }
 }

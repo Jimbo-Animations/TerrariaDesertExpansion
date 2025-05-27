@@ -8,15 +8,21 @@ Items: {
 
 	CactusStaff: {
 		DisplayName: Cactus Staff
-		Tooltip: Summons Cammy the Cactus to protect an area
+		Tooltip:
+			'''
+			Summons Cammy the Cactus to protect an area
+			"Some say she's a prick, but Cammy just wants her personal space."
+			'''
 	}
 
 	SpittingSerpentScepter: {
 		DisplayName: Spitting Serpent Scepter
-		Tooltip: Launches a barrage of piercing spit that poison enemies
+		Tooltip:
+			'''
+			Launches a barrage of piercing spit that poison enemies
+			"It has some toxic things to say!"
+			'''
 	}
-
-	EvilSnakeBannerItem.DisplayName: Evil Snake Banner Item
 
 	CactusLamp: {
 		DisplayName: Cactus Lamp
@@ -32,16 +38,17 @@ Items: {
 			'''
 	}
 
-	CactoidBannerItem.DisplayName: Cactoid Banner Item
-	CorruptCactoidBannerItem.DisplayName: Corrupt Cactoid Banner Item
-	CrimsonCactoidBannerItem.DisplayName: Crimson Cactoid Banner Item
-	HallowedCactoidBannerItem.DisplayName: Colorful Cactoid Banner Item
+	EvilSnakeBannerItem.DisplayName: Evil Snake Banner
+	CactoidBannerItem.DisplayName: Cactoid Banner
+	CorruptCactoidBannerItem.DisplayName: Corrupt Cactoid Banner
+	CrimsonCactoidBannerItem.DisplayName: Crimson Cactoid Banner
+	HallowedCactoidBannerItem.DisplayName: Colorful Cactoid Banner
 }
 
 WorldGen: {
 	DesertUrnMessage: Generating Urns
-	DesertHouseMessage: Generating Cactus House
 	DesertMoundMessage: Generating Desert Hill
+	DesertHouseMessage: Generating Cactus House
 }
 
 NPCs: {
