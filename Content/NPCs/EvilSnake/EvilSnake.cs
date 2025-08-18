@@ -74,7 +74,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
 
                 if (animState == 1 && NPC.frame.Y == NPC.frame.Height * 3)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(30 * NPC.direction, -3), new Vector2(3 * NPC.direction, 0), ProjectileType<EvilSnakeBite>(), 10, 2f, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(30 * NPC.direction, -3), new Vector2(4 * NPC.direction, 0), ProjectileType<EvilSnakeBite>(), 10, 2f, Main.myPlayer);
 
                     SoundEngine.PlaySound(SoundID.NPCHit2, NPC.Center);
                 }
@@ -120,7 +120,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
             if (attackCooldown > 0) attackCooldown--;
             if (soundCooldown > 0) soundCooldown--;
 
-            shouldBite = attackCooldown <= 0 && NPC.HasValidTarget && BasicUtils.CloseTo(NPC.Center.X, target.Center.X, 88) && BasicUtils.CloseTo(NPC.Center.Y, target.Center.Y, 40);
+            shouldBite = attackCooldown <= 0 && NPC.HasValidTarget && BasicUtils.CloseTo(NPC.Center.X, target.Center.X, 100) && BasicUtils.CloseTo(NPC.Center.Y, target.Center.Y, 40);
 
             if (soundCooldown <= 0 && Main.rand.NextBool(150))
             {
@@ -138,6 +138,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
                 int dust = Dust.NewDust(NPC.position, NPC.width, NPC.height, 5, newColor: Color.White, Scale: 1);
                 Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(-1.0f, 1.1f), Main.rand.NextFloat(-1.0f, 1.1f));
             }
+
+            NPC.direction = -hit.HitDirection;
 
             if (NPC.life <= 0)
             {

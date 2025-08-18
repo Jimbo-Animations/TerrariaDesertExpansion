@@ -13,7 +13,7 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
 
         public override void SetDefaults()
         {
-            Item.damage = 12;
+            Item.damage = 10;
             Item.knockBack = 2f;
             Item.mana = 10;
             Item.Size = new Vector2(48);
@@ -69,7 +69,7 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
             Projectile.penetrate = -1;
 
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 30;
+            Projectile.localNPCHitCooldown = 35;
         }
 
         int blinkFrame = 0;
@@ -119,6 +119,8 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
         {
             Player owner = Main.player[Projectile.owner];
             Projectile.ai[1]++;
+
+            Projectile.position = Projectile.position.findGroundUnder() - new Vector2(0, 50);
 
             SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 

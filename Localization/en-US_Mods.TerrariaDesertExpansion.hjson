@@ -61,6 +61,8 @@ NPCs: {
 	CorruptCactoid.DisplayName: Corrupt Cactoid
 	CrimsonCactoid.DisplayName: Crimson Cactoid
 	HallowedCactoid.DisplayName: Colorful Cactoid
+	BombSpirit.DisplayName: Bomb Spirit
+	HappySpirit.DisplayName: Happy Spirit
 }
 
 Projectiles: {
@@ -74,11 +76,17 @@ Projectiles: {
 	BloodSpit.DisplayName: Blood Spit
 	CactusLampPet.DisplayName: Cactus Lamp Pet
 	SandShakerProj.DisplayName: Sand Shaker
+	BombSpiritExplosion.DisplayName: Bomb Spirit Explosion
 }
 
 Buffs: {
 	CactusLampBuff: {
 		DisplayName: Cactus Lamp Buff
 		Description: Lights the way... but flickers
+	}
+
+	HappySpiritBuff: {
+		DisplayName: Jinn's Blessing
+		Description: You feel lucky!
 	}
 }

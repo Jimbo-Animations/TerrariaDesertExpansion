@@ -1,5 +1,4 @@
-﻿using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 
 namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Scarab
@@ -17,8 +16,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Scarab
             NPCID.Sets.MustAlwaysDraw[NPC.type] = true;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.TrailingMode[NPC.type] = 3;
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCID.Sets.MPAllowedEnemies[Type] = true;
 
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
@@ -50,7 +47,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Scarab
             NPC.lavaImmune = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-            NPC.noGravity = true;
             NPC.dontCountMe = true;
             NPC.dontTakeDamage = true;
 
@@ -145,6 +141,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Scarab
                 NPC.TargetClosest();
 
             SwarmSeparation(target.Center);
+
+            // Controls movement and when to slow down.
 
             if (NPC.ai[1]++ > 360) NPC.ai[1] = 60;
             if (NPC.ai[1] <= 120) NPC.velocity *= .98f;

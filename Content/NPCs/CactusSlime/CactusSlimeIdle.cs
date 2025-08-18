@@ -43,6 +43,11 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPC.frame.Y = frameHeight * 4;
         }
 
+        public override bool CheckActive()
+        {
+            return !Main.dayTime;
+        }
+
         public ref float AITimer => ref NPC.ai[0];
 
         public float stretchWidth;
@@ -80,7 +85,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             if (spawnInfo.PlayerSafe) return 0f;
             if (NPC.AnyNPCs(NPCType<MegaCactusSlime>())) return 0f;
 
-            if (spawnInfo.Player.ZoneDesert && Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return Progression.DownedCactusSlime ? 0.01f : 0.1f;
+            if (spawnInfo.Player.ZoneDesert && Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return Progression.DownedCactusSlime ? 0.012f : 0.12f;
             else return 0f;
         }
 

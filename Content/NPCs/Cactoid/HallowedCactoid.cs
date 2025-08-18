@@ -203,6 +203,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
                         Main.dust[dust].noGravity = false;
                         Main.dust[dust].noLight = false;
                         Main.dust[dust].velocity = new Vector2(0, Main.rand.NextFloat(-4, 0));
+
+                        NPC.localAI[0] = 0;
                     }
 
                     if (AITimer == 1) 

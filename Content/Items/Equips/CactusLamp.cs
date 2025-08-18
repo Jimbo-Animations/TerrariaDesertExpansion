@@ -1,8 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-
-namespace TerrariaDesertExpansion.Content.Items.Equips
+﻿namespace TerrariaDesertExpansion.Content.Items.Equips
 {
     class CactusLamp : ModItem
     {
@@ -50,6 +46,23 @@ namespace TerrariaDesertExpansion.Content.Items.Equips
     class CactusLampPet : ModProjectile
     {
         public override string Texture => "TerrariaDesertExpansion/Content/Items/Equips/CactusLamp";
+
+        public override void SetStaticDefaults()
+        {
+            Main.projPet[Projectile.type] = true;
+
+            // This code is needed to customize the vanity pet display in the player select screen. Quick explanation:
+            // * It uses fluent API syntax, just like Recipe
+            // * You start with ProjectileID.Sets.SimpleLoop, specifying the start and end frames as well as the speed, and optionally if it should animate from the end after reaching the end, effectively "bouncing"
+            // * To stop the animation if the player is not highlighted/is standing, as done by most grounded pets, add a .WhenNotSelected(0, 0) (you can customize it just like SimpleLoop)
+            // * To set offset and direction, use .WithOffset(x, y) and .WithSpriteDirection(-1)
+            // * To further customize the behavior and animation of the pet (as its AI does not run), you have access to a few vanilla presets in DelegateMethods.CharacterPreview to use via .WithCode(). You can also make your own, showcased in MinionBossPetProjectile
+            ProjectileID.Sets.CharacterPreviewAnimations[Projectile.type] = ProjectileID.Sets.SimpleLoop(0, 0)
+                .WithOffset(-10, -20f)
+                .WithSpriteDirection(-1)
+                .WithCode(DelegateMethods.CharacterPreview.Float);
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 34;
@@ -68,6 +81,15 @@ namespace TerrariaDesertExpansion.Content.Items.Equips
             return false;
         }
 
+        private void CheckActive(Player player)
+        {
+            // Keep the projectile from disappearing as long as the player isn't dead and has the pet buff
+            if (!player.dead && player.HasBuff(ModContent.BuffType<CactusLampBuff>()))
+            {
+                Projectile.timeLeft = 2;
+            }
+        }
+
         bool flicker;
         bool chase;
         public override void AI()
@@ -77,21 +99,23 @@ namespace TerrariaDesertExpansion.Content.Items.Equips
             Vector2 IdealPos = owner.Center + new Vector2(34 * owner.direction, -24);
 
             if (flicker)
-
-            if (flicker && Main.rand.NextBool(6)) flicker = false;
-
-            if (Main.rand.NextBool(600) && !flicker) flicker = true;
-
-            if (!owner.active)
             {
-                Projectile.active = false;
-                return;
+                if (Projectile.ai[1] > 0) Projectile.ai[1]--;
+                else flicker = false;
             }
 
-            if (!owner.dead && owner.HasBuff(BuffType<CactusLampBuff>())) Projectile.timeLeft = 2;
+            if (Main.rand.NextBool(600) && !flicker) 
+            {
+                flicker = true;
+                Projectile.ai[1] = Main.rand.Next(5, 11);
+            }
+
+            CheckActive(owner);
 
             if (Projectile.Distance(IdealPos) > 160) chase = true;
             if (Projectile.Distance(IdealPos) < 80) chase = false;
+
+            // Decides whether the pet should move slow or fast
 
             if (chase)
             {
@@ -112,14 +136,25 @@ namespace TerrariaDesertExpansion.Content.Items.Equips
                 if (Projectile.Distance(IdealPos) > 4) Projectile.velocity += Projectile.DirectionTo(IdealPos) * 0.2f;
                 Projectile.velocity *= 0.95f;
 
-                Projectile.rotation = Projectile.rotation.AngleTowards(MathHelper.Clamp(Projectile.velocity.X * 0.1f, -0.75f, 0.75f), 0.2f);
+                Projectile.rotation = Projectile.rotation.AngleTowards(MathHelper.Clamp(Projectile.velocity.X * 0.1f, -0.75f, 0.75f), 0.2f);                
             }
 
+            // Teleports the pet if the player is too far away
+
+            if (Projectile.Distance(IdealPos) > 800)
+            {
+                Projectile.position = IdealPos - (Projectile.Size / 2);
+                Projectile.velocity = Vector2.Zero;
+                Projectile.netUpdate = true;
+            }
 
             float glowMult = (float)Math.Sin(Main.GlobalTimeWrappedHourly) / 30;
 
-            if (flicker) if (!Main.dedServ) Lighting.AddLight(Projectile.Center, new Vector3(.3f, .2f, .1f));
-            else if(!Main.dedServ) Lighting.AddLight(Projectile.Center, new Vector3(.55f + glowMult, .45f + glowMult, .225f + glowMult));
+            if (flicker) 
+            {
+                if (!Main.dedServ) Lighting.AddLight(Projectile.Center, new Vector3(Projectile.Opacity * .35f, Projectile.Opacity * .2f, Projectile.Opacity * .1f));
+            }
+            else if (!Main.dedServ) Lighting.AddLight(Projectile.Center, new Vector3(.75f + Math.Abs(glowMult), .5f + Math.Abs(glowMult), .3f + Math.Abs(glowMult)));
 
             Projectile.ai[0]++;
         }

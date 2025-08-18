@@ -67,7 +67,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
                 case AttackPattern.Hopping:
 
-                    if (AITimer == 0) 
+                    if (AITimer == 0)
                     {
                         AIRandomizer = Main.rand.Next(60, 76);
                         NPC.netUpdate = true;
@@ -201,13 +201,19 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                         NPC.position = goalPosition;
                         NPC.netUpdate = true;
                     }
-                   
+
                     if (AITimer >= 160)
                     {
                         NPC.ai[0] = 1;
                         NPC.dontTakeDamage = false;
                         resetVars();
                     }
+
+                    break;
+
+                case AttackPattern.RunAway:
+
+                    NPC.noTileCollide = true;
 
                     break;
             }

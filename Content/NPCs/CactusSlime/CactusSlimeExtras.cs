@@ -45,7 +45,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
         public override bool CheckActive()
         {
-            return Main.player[NPC.target].dead || NPC.ai[0] == 0;
+            return true;
         }
 
         private enum AttackPattern : byte
@@ -54,7 +54,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             Hopping = 1,
             SpikeBarrage = 2,
             MiniBarrage = 3,
-            Teleport = 4
+            Teleport = 4,
+            RunAway = 5
         }
 
         private AttackPattern AIstate
@@ -97,8 +98,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             stretchHeight = reader.ReadInt32();
             goalPosition = reader.ReadVector2();
         }
-
-        
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
@@ -150,6 +149,15 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPC.velocity.Y += 0.33f;
             NPC.velocity *= 0.99f;
 
+            NPC.EncourageDespawn(30);
+
+            if (target.dead || !target.active || !Main.dayTime)
+            {
+                NPC.dontTakeDamage = true;
+                NPC.ai[0] = 5;
+                resetVars();
+            }
+
             contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 60 : 50 : 40 : 30;
             AIModifier = Main.expertMode ? Main.getGoodWorld ? 0.6f : 0.8f : 1;
 
@@ -165,7 +173,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                 }
             }
 
-            if (NPC.velocity.Y > 0 && NPC.collideY && !isGrounded)
+            if (NPC.velocity.Y > 0 && NPC.collideY && !isGrounded && NPC.ai[0] != 4)
             {
                 SoundEngine.PlaySound(SoundID.DeerclopsStep with { Volume = 2 }, NPC.Center);
 
@@ -205,6 +213,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             AIModifier = 0;
             MovementTracker = 0;
             jumpDuration = 0;
+
             NPC.netUpdate = true;
         }
 
