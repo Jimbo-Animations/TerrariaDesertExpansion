@@ -72,6 +72,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Scarab
             {
                 NPC.frameCounter = 0;
                 NPC.frame.Y += frameHeight;
+
                 if (NPC.frame.Y == 2 * frameHeight)
                 {
                     NPC.frame.Y = 0;

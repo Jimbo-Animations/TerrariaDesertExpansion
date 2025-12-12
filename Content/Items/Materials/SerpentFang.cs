@@ -17,7 +17,7 @@
         }
     }
 
-    public class FangSubstitutes : GlobalItem
+    public class SerpentFangSubstitues : GlobalItem
     {
         public override bool AppliesToEntity(Item item, bool lateInstantiation)
         {

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ReLogic.Content;
 using Terraria.WorldBuilding;
 
 namespace TerrariaDesertExpansion.Systems.Utilities
@@ -55,7 +51,6 @@ namespace TerrariaDesertExpansion.Systems.Utilities
         }
 
         // Casts a line at a set position, with a set length.
-
         public static Vector2 Cast(Vector2 start, Vector2 direction, float length, bool platformCheck = false)
         {
             direction.SafeNormalize(Vector2.UnitY);
@@ -63,7 +58,7 @@ namespace TerrariaDesertExpansion.Systems.Utilities
 
             for (int i = 0; i < length; i++)
             {
-                if ((Collision.CanHitLine(output, 0, 0, output + direction, 0, 0) && (platformCheck ? !Collision.SolidTiles(output, 1, 1, platformCheck) && Main.tile[(int)output.X / 16, (int)output.Y / 16].TileType != TileID.Platforms : true)))
+                if (Collision.CanHitLine(output, 0, 0, output + direction, 0, 0) && (platformCheck ? !Collision.SolidTiles(output, 1, 1, platformCheck) && Main.tile[(int)output.X / 16, (int)output.Y / 16].TileType != TileID.Platforms : true))
                 {
                     output += direction;
                 }
@@ -77,7 +72,6 @@ namespace TerrariaDesertExpansion.Systems.Utilities
         }
 
         // Casts a line and returns the length.
-
         public static float CastLength(Vector2 start, Vector2 direction, float length, bool platformCheck = false)
         {
             Vector2 end = Cast(start, direction, length, platformCheck);
@@ -85,7 +79,6 @@ namespace TerrariaDesertExpansion.Systems.Utilities
         }
 
         // Checks if a value is within a set range of another.
-
         public static bool CloseTo(this float f, float target, float range = 1f)
         {
             return f > target - range && f < target + range;
@@ -162,14 +155,12 @@ namespace TerrariaDesertExpansion.Systems.Utilities
         }
 
         // Avoids division by zero.
-
         public static float Safe(this float f, float x = 1)
         {
             return f + (f == 0 ? x : 0);
         }
 
         // Finds the shortest path to a desired angle.
-
         public static float ShortestPathToAngle(float from, float to)
         {
             float difference = (to - from) % MathHelper.TwoPi;
@@ -177,7 +168,6 @@ namespace TerrariaDesertExpansion.Systems.Utilities
         }
 
         // Lerps to the shortest path to a desired angle.
-
         public static float LerpAngle(float from, float to, float t)
         {
             return from + ShortestPathToAngle(from, to) * t;

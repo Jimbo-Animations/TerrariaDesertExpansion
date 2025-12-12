@@ -26,9 +26,9 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPC.aiStyle = -1;
             NPC.Size = new Vector2(74, 58);
 
-            NPC.damage = 0;
-            NPC.defense = 5;
-            NPC.lifeMax = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 1760 : 1350 : 1040 : 800;
+            NPC.damage = 20;
+            NPC.defense = 4;
+            NPC.lifeMax = Main.masterMode ? 1721 / 3 : Main.expertMode ? 1350 / 2 : 1000;
             NPC.knockBackResist = 0f;
             NPC.scale = Main.getGoodWorld ? 1.25f : 1;
             NPC.value = Item.buyPrice(0, 0, 25, 0);
@@ -58,6 +58,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
                     NPC.velocity = new Vector2(5 * -goalDirection, -10);
                     NPC.spriteDirection = -goalDirection;
+                    NPC.damage = 0;
                     isGrounded = false;
 
                     NPC.ai[0] = 1;
@@ -120,8 +121,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                     {
                         SoundEngine.PlaySound(SoundID.Item39 with { Pitch = -.1f, Volume = 2 }, NPC.Center);
 
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.NextFloat(2, 13), MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -30, -15)) + new Vector2(0, Main.rand.NextFloat(-0.5f, 0.6f)), ProjectileType<CactusSlimeSpike>(), 10, 2f, Main.myPlayer);
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.NextFloat(-12, -1), MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -30, -15)) + new Vector2(0, Main.rand.NextFloat(-0.5f, 0.6f)), ProjectileType<CactusSlimeSpike>(), 10, 2f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.NextFloat(2, 13), MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -30, -15)) + new Vector2(0, Main.rand.NextFloat(-0.5f, 0.6f)), ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.NextFloat(-12, -1), MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -30, -15)) + new Vector2(0, Main.rand.NextFloat(-0.5f, 0.6f)), ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
                         NPC.netUpdate = true;
                     }
 
@@ -163,7 +164,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
                         for (int i = -5; i < 5; i++)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, NPC.DirectionTo(target.Center).RotatedBy(MathHelper.Pi * i / 10) * 8, ProjectileType<CactusSlimeSpike>(), 10, 2f, Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, NPC.DirectionTo(target.Center).RotatedBy(MathHelper.Pi * i / 10) * 8, ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
                         }
 
                         NPC.netUpdate = true;

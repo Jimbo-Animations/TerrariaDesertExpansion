@@ -58,6 +58,12 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
             NPC.value = Item.buyPrice(0, 0, 0, 5);
         }
 
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (spawnInfo.Player.ZoneDesert && Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return 0.5f;
+            else return 0f;
+        }
+
         int animState;
         bool shouldBite;
         public int contactDamage;
@@ -152,12 +158,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
                 Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center, new Vector2(1 * NPC.direction, -1).RotatedByRandom(MathHelper.ToRadians(10)), gore3);
                 Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, gore4);
             }
-        }
-
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-            if (spawnInfo.Player.ZoneDesert && Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return 0.5f;
-            else return 0f;
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

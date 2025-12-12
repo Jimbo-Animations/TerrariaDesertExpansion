@@ -3,7 +3,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
 using TerrariaDesertExpansion.Content.Items.Equips;
-using TerrariaDesertExpansion.Content.Items.Materials;
 using TerrariaDesertExpansion.Content.Items.Weapons;
 using TerrariaDesertExpansion.Systems;
 
@@ -138,6 +137,12 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             }
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            cooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
+            return true;
+        }
+
         public override void OnKill()
         {
             NPC.SetEventFlagCleared(ref Progression.DownedCactusSlime, -1);
@@ -158,15 +163,15 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                 resetVars();
             }
 
-            contactDamage = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 60 : 50 : 40 : 30;
+            contactDamage = NPC.GetAttackDamage_ScaledByStrength(20);
             AIModifier = Main.expertMode ? Main.getGoodWorld ? 0.6f : 0.8f : 1;
 
-            if (NPC.velocity.Y > 0 && !isGrounded) 
+            if (NPC.velocity.Y > 0 && NPC.position.Y == NPC.oldPosition.Y && !isGrounded) 
             {
                 NPC.velocity.X += 0.001f * -goalDirection;
                 jumpDuration++;
 
-                if (jumpDuration > 200)
+                if (jumpDuration > 60)
                 {
                     NPC.ai[0] = 4;
                     resetVars();
@@ -182,7 +187,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                 stretchWidth = 1.25f;
                 stretchHeight = .75f;
 
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, ProjectileType<CactusSlimeShockwave>(), 10, 2f, Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, ProjectileType<CactusSlimeShockwave>(), 8, 2f, Main.myPlayer);
 
                 NPC.velocity = Vector2.Zero;
                 isGrounded = true;

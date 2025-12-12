@@ -43,11 +43,15 @@ Items: {
 	CorruptCactoidBannerItem.DisplayName: Corrupt Cactoid Banner
 	CrimsonCactoidBannerItem.DisplayName: Crimson Cactoid Banner
 	HallowedCactoidBannerItem.DisplayName: Colorful Cactoid Banner
+
+	HauntedSand: {
+		DisplayName: Haunted Sand
+		Tooltip: It still wriggles in your grasp
+	}
 }
 
 WorldGen: {
 	DesertUrnMessage: Generating Urns
-	DesertMoundMessage: Generating Desert Hill
 	DesertHouseMessage: Generating Cactus House
 }
 
@@ -63,6 +67,9 @@ NPCs: {
 	HallowedCactoid.DisplayName: Colorful Cactoid
 	BombSpirit.DisplayName: Bomb Spirit
 	HappySpirit.DisplayName: Happy Spirit
+	DustDevil.DisplayName: Dust Devil
+	HauntedSandGlob.DisplayName: Haunted Sand Glob
+	PharaohsCurse.DisplayName: Pharaoh's Curse
 }
 
 Projectiles: {
@@ -77,6 +84,10 @@ Projectiles: {
 	CactusLampPet.DisplayName: Cactus Lamp Pet
 	SandShakerProj.DisplayName: Sand Shaker
 	BombSpiritExplosion.DisplayName: Bomb Spirit Explosion
+	HauntedSandBall.DisplayName: Haunted Sand Ball
+	SandBarrier.DisplayName: Sand Barrier
+	CurseBlast.DisplayName: Curse Blast
+	CurseBlastBig.DisplayName: Curse Blast Big
 }
 
 Buffs: {

@@ -1,5 +1,4 @@
-﻿using TerrariaDesertExpansion.Content.NPCs.CactusSlime;
-using TerrariaDesertExpansion.Systems;
+﻿using TerrariaDesertExpansion.Systems;
 using Terraria.DataStructures;
 using TerrariaDesertExpansion.Content.Dusts;
 
@@ -24,9 +23,9 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPC.aiStyle = -1;
             NPC.Size = new Vector2(74, 58);
 
-            NPC.damage = 0;
+            NPC.damage = 20;
             NPC.defense = 9999;
-            NPC.lifeMax = Main.expertMode ? Main.masterMode ? Main.getGoodWorld ? 1760 : 1350 : 1040 : 800;
+            NPC.lifeMax = Main.masterMode ? 1721 / 3 : Main.expertMode ? 1350 / 2 : 1000;
             NPC.knockBackResist = 0;
             NPC.scale = Main.getGoodWorld ? 1.25f : 1;
             NPC.npcSlots = 50f;
@@ -36,6 +35,20 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPC.noTileCollide = false;
             NPC.HitSound = SoundID.NPCHit1 with { Volume = 2, Pitch = -.2f };
             NPC.DeathSound = SoundID.NPCDeath1 with { Volume = 2, Pitch = -.2f };
+        }
+
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            base.ApplyDifficultyAndPlayerScaling(numPlayers, balance, bossAdjustment);
+        }
+
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (spawnInfo.PlayerSafe) return 0f;
+            if (NPC.AnyNPCs(NPCType<MegaCactusSlime>())) return 0f;
+
+            if (spawnInfo.Player.ZoneDesert && Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return Progression.DownedCactusSlime ? 0.012f : 0.12f;
+            else return 0f;
         }
 
         public override void FindFrame(int frameHeight)
@@ -61,6 +74,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
         public override void OnSpawn(IEntitySource source)
         {
             NPC.spriteDirection = Main.rand.NextBool() ? 1 : -1;
+            NPC.damage = 0;
         }
 
         public override void AI()
@@ -78,15 +92,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPC.Transform(NPCType<MegaCactusSlime>());
             CombatText.NewText(NPC.getRect(), new Color(250, 150, 50), "!!!", true, false);
             NPC.netUpdate = true;
-        }
-
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-            if (spawnInfo.PlayerSafe) return 0f;
-            if (NPC.AnyNPCs(NPCType<MegaCactusSlime>())) return 0f;
-
-            if (spawnInfo.Player.ZoneDesert && Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return Progression.DownedCactusSlime ? 0.012f : 0.12f;
-            else return 0f;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
