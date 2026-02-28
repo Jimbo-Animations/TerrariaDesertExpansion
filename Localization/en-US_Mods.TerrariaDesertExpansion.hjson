@@ -69,7 +69,7 @@ NPCs: {
 	HappySpirit.DisplayName: Happy Spirit
 	DustDevil.DisplayName: Dust Devil
 	HauntedSandGlob.DisplayName: Haunted Sand Glob
-	PharaohsCurse.DisplayName: Pharaoh's Curse
+	PharaohsCurse.DisplayName: Vengeful Haunter
 }
 
 Projectiles: {
@@ -88,6 +88,8 @@ Projectiles: {
 	SandBarrier.DisplayName: Sand Barrier
 	CurseBlast.DisplayName: Curse Blast
 	CurseBlastBig.DisplayName: Curse Blast Big
+	DustVortex.DisplayName: Dust Vortex
+	DesertBlade.DisplayName: Desert Blade
 }
 
 Buffs: {

@@ -7,8 +7,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 7;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
         }
 
         private Vector2 startPosition;
@@ -47,9 +45,12 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             {
                 Projectile.frame++;
 
-                int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CorruptTorch, Scale: 1);
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].noLight = false;
+                for (int i = 0; i < 2; i++)
+                {
+                    int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CorruptTorch, Scale: 2f);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].noLight = true;
+                }
 
                 if (Projectile.frame >= 7) Projectile.frame = 0;
             }
@@ -66,13 +67,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             Rectangle frame = new Rectangle(0, (texture.Height / Main.projFrames[Projectile.type]) * Projectile.frame, texture.Width, texture.Height / Main.projFrames[Projectile.type]);
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 
-            Texture2D trail = Request<Texture2D>("GloryMod/CoolEffects/Textures/SemiStar").Value;
-
-            for (int i = 1; i < Projectile.oldPos.Length; i++)
-            {
-                Main.EntitySpriteDraw(trail, Projectile.oldPos[i] - Projectile.position + Projectile.Center - Main.screenPosition, null, Color.LightPink * .5f * opacity, Projectile.oldRot[i] + MathHelper.PiOver2, trail.Size() / 2, new Vector2(Projectile.scale * 1.25f - (i / (float)Projectile.oldPos.Length), Projectile.scale * .75f - (i / (float)Projectile.oldPos.Length)), SpriteEffects.None, 0);
-
-            }
             Main.EntitySpriteDraw(glow, Projectile.Center - Main.screenPosition, null, Color.LightPink * opacity, Projectile.rotation, glow.Size() / 2 - new Vector2(glow.Width * .2f, 0), Projectile.scale * .3f, SpriteEffects.FlipHorizontally, 0);
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, Color.White * opacity, Projectile.rotation, drawOrigin + new Vector2(frame.Width * .15f, 0), Projectile.scale, SpriteEffects.FlipHorizontally, 0);        
 
@@ -85,8 +79,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 7;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
         }
 
         private Vector2 startPosition;
@@ -103,7 +95,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
 
         public override void SetDefaults()
         {
-            Projectile.Size = new Vector2(30);
+            Projectile.Size = new Vector2(54);
             Projectile.tileCollide = false;
             Projectile.hostile = true;
             Projectile.ignoreWater = true;
@@ -125,9 +117,12 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             {
                 Projectile.frame++;
 
-                int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CorruptTorch, Scale: 1);
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].noLight = false;
+                for (int i = 0; i < 3; i++)
+                {
+                    int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CorruptTorch, Scale: 2f);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].noLight = true;
+                }
 
                 if (Projectile.frame >= 7) Projectile.frame = 0;
             }
@@ -143,13 +138,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             Texture2D glow = Request<Texture2D>("TerrariaDesertExpansion/Content/ExtraAssets/Glow_1").Value;
             Rectangle frame = new Rectangle(0, (texture.Height / Main.projFrames[Projectile.type]) * Projectile.frame, texture.Width, texture.Height / Main.projFrames[Projectile.type]);
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-
-            Texture2D trail = Request<Texture2D>("GloryMod/CoolEffects/Textures/SemiStar").Value;
-
-            for (int i = 1; i < Projectile.oldPos.Length; i++)
-            {
-                Main.EntitySpriteDraw(trail, Projectile.oldPos[i] - Projectile.position + Projectile.Center - Main.screenPosition, null, Color.LightPink * .5f * opacity, Projectile.oldRot[i] + MathHelper.PiOver2, trail.Size() / 2, new Vector2(Projectile.scale * 1.67f - (i / (float)Projectile.oldPos.Length), Projectile.scale * 1f - (i / (float)Projectile.oldPos.Length)), SpriteEffects.None, 0);
-            }
 
             Main.EntitySpriteDraw(glow, Projectile.Center - Main.screenPosition, null, Color.LightPink * opacity, Projectile.rotation, glow.Size() / 2 - new Vector2(glow.Width * .15f, 0), Projectile.scale * .5f, SpriteEffects.FlipHorizontally, 0);
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, Color.White * opacity, Projectile.rotation, drawOrigin + new Vector2(frame.Width * .15f, 0), Projectile.scale, SpriteEffects.FlipHorizontally, 0);

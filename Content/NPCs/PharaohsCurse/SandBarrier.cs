@@ -83,16 +83,6 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             }                 
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            if (Projectile.ai[2] > 0) 
-            {
-                if (target.velocity.Y > 0) target.velocity.Y = -10;
-                else target.velocity.Y -= 10;
-                
-            }
-        }
-
         public float opacity;
         float timer;
         public override bool PreDraw(ref Color lightColor)

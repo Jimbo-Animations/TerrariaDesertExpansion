@@ -104,8 +104,8 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
 
                     // Tomb floor
 
-                    WorldUtils.Gen(new Point(x - 6, y + 1), new Shapes.Rectangle(13, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.SetFrames(frameNeighbors: true)));
-                    WorldUtils.Gen(new Point(x - 4, y + 2), new Shapes.Rectangle(9, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.SetFrames(frameNeighbors: true)));
+                    WorldUtils.Gen(new Point(x - 6, y + 1), new Shapes.Rectangle(13, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.PlaceWall(WallID.SandstoneBrick), new Actions.SetFrames(frameNeighbors: true)));
+                    WorldUtils.Gen(new Point(x - 4, y + 2), new Shapes.Rectangle(9, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.PlaceWall(WallID.SandstoneBrick), new Actions.SetFrames(frameNeighbors: true)));
 
                     // Hollow out the inside
 
@@ -137,8 +137,8 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
                 {
                     // Tomb floor
 
-                    WorldUtils.Gen(new Point(x - 6, y + 1), new Shapes.Rectangle(12, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.SetFrames(frameNeighbors: true)));
-                    WorldUtils.Gen(new Point(x - 4, y + 2), new Shapes.Rectangle(8, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.SetFrames(frameNeighbors: true)));
+                    WorldUtils.Gen(new Point(x - 6, y + 1), new Shapes.Rectangle(12, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.PlaceWall(WallID.SandstoneBrick), new Actions.SetFrames(frameNeighbors: true)));
+                    WorldUtils.Gen(new Point(x - 4, y + 2), new Shapes.Rectangle(8, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.PlaceWall(WallID.SandstoneBrick), new Actions.SetFrames(frameNeighbors: true)));
 
                     // Hollow out the inside and add walls
 
@@ -149,8 +149,8 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
 
                     // Add roof
 
-                    WorldUtils.Gen(new Point(x - 6, y - 4), new Shapes.Rectangle(12, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.SetFrames(frameNeighbors: true)));
-                    WorldUtils.Gen(new Point(x - 4, y - 5), new Shapes.Rectangle(8, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.SetFrames(frameNeighbors: true)));
+                    WorldUtils.Gen(new Point(x - 6, y - 4), new Shapes.Rectangle(12, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.PlaceWall(WallID.SandstoneBrick), new Actions.SetFrames(frameNeighbors: true)));
+                    WorldUtils.Gen(new Point(x - 4, y - 5), new Shapes.Rectangle(8, 1), Actions.Chain(new Actions.SetTile(TileID.SandStoneSlab), new Actions.PlaceWall(WallID.SandstoneBrick), new Actions.SetFrames(frameNeighbors: true)));
 
                     // Add supporting pillars
 

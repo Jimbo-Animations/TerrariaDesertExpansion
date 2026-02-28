@@ -119,7 +119,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.DustDevil
 
                 if (NPC.frame.Y == frameHeight * 4)
                 {
-                    if (SpitAttack && NPC.frame.X == NPC.frame.Width)
+                    if (SpitAttack && NPC.frame.X == NPC.frame.Width) // Where the projectile is shot.
                     {
                         SoundEngine.PlaySound(SoundID.Item65 with { PitchVariance = 0.4f, Pitch = -0.15f }, NPC.Center);
 
@@ -392,7 +392,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.DustDevil
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ItemID.SandBlock, 1, 1, 2));
+            npcLoot.Add(ItemDropRule.Common(ItemID.SandBlock, 1, 3, 4));
             npcLoot.Add(ItemDropRule.Common(ItemID.AncientCloth, 2));
             npcLoot.Add(ItemDropRule.Common(ItemType<HauntedSand>(), 5));
         }

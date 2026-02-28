@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Terraria.DataStructures;
+﻿using Terraria.DataStructures;
+using TerrariaDesertExpansion.Content.Items.Materials;
 
 namespace TerrariaDesertExpansion.Content.Items.Weapons
 {
@@ -46,6 +46,23 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
             player.UpdateMaxTurrets();
 
             return false;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Cactus, 50)
+                .AddIngredient(ItemID.ClayBlock, 9)
+                .AddIngredient(ItemID.GoldBar, 1)
+                .AddTile(TileID.DemonAltar)
+                .Register();
+
+            CreateRecipe()
+                .AddIngredient(ItemID.Cactus, 50)
+                .AddIngredient(ItemID.ClayBlock, 9)
+                .AddIngredient(ItemID.PlatinumBar, 1)
+                .AddTile(TileID.DemonAltar)
+                .Register();
         }
     }
 

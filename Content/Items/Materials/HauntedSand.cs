@@ -28,7 +28,7 @@
         {
             Recipe SandBottleRecipe = Recipe.Create(ItemID.SandstorminaBottle);
             SandBottleRecipe.AddIngredient(ItemType<HauntedSand>(), 3);
-            SandBottleRecipe.AddIngredient(ItemID.Topaz);
+            SandBottleRecipe.AddIngredient(ItemID.Cloud, 6);
             SandBottleRecipe.AddIngredient(ItemID.Bottle);
         }
     }

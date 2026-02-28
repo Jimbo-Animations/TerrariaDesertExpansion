@@ -1,4 +1,4 @@
-﻿using Terraria.DataStructures;
+﻿using System.IO;
 using Terraria.GameContent.Bestiary;
 using Terraria.Utilities;
 
@@ -19,9 +19,14 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             rotation = NPC.rotation;
         }
 
+        public override void BossLoot(ref int potionType)
+        {
+            potionType = ItemID.HealingPotion;
+        }
+
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 1;
+            if (!die) NPC.frameCounter++;
             if (NPC.frameCounter > 5)
             {
                 NPC.frame.Y += frameHeight;
@@ -43,10 +48,10 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             GroundPound = 3,
             FanBarrage = 4,
             TeleportAttack = 5,
-            SandnadoAttack = 6,
-            ChaseAndShoot = 7,
-            ArenaSpawn = 8,      
-            Phase2 = 9,
+            SwordRing = 6,
+            SandnadoAttack = 7,
+            ArenaSpawn = 8,
+            PhaseTransition = 9,
             Phase3 = 10,
             DefeatAnim = 11
         }
@@ -67,27 +72,75 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             return true;
         }
 
+        // Keeping variables synced
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            if (Main.netMode == NetmodeID.Server || Main.dedServ) // Code that *should* send these variables for updating.
+            {
+                writer.Write(ArenaDir);
+                writer.Write(ArenaDuration);
+
+                for (int state = 2; state < aiWeights.Length; state++)
+                {
+                    writer.Write(aiWeights[state]);
+                }
+
+                writer.Write(useContactDamage);
+                writer.Write(changeDirection);
+                writer.Write(die);
+            }
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            if (Main.netMode == NetmodeID.MultiplayerClient) // Receive extra AI variables to sync on multiplayer clients.
+            {
+                ArenaDir = reader.ReadInt32();
+                ArenaDuration = reader.ReadInt32();
+
+                for (int state = 2; state < aiWeights.Length; state++)
+                {
+                    aiWeights[state] = reader.ReadInt32();
+                }
+
+                useContactDamage = reader.ReadBoolean();
+                changeDirection = reader.ReadBoolean();
+                die = reader.ReadBoolean();
+            }
+        }
+
+        // While creating an arena, take reduced damage from the player. Amount of damage reduced is based on difficulty.
+
+        public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
+        {
+            if (NPC.ai[0] == 8) modifiers.FinalDamage *= Main.expertMode ? .5f : .75f;
+        }
+
+        public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
+        {
+            if (NPC.ai[0] == 8) modifiers.FinalDamage *= Main.expertMode ? .5f : .75f;
+        }
+
         // Important for using the arena
         public Vector2 ArenaCenter;
-        public float ArenaRadius = 420;
+        public float ArenaRadius = Main.expertMode ? 420 : 630;
         public int ArenaDuration = 1500;
         public float ArenaDir = 1;
 
         // Additional variables
         public Vector2 PositionPoint;
         public bool phase2;
+        public bool phase3;
+        public bool die;
         public bool eyeMode;
         public bool changeDirection = true;
         public bool useContactDamage;
         public float shakeFrequency = .05f;
 
-        public override void OnSpawn(IEntitySource source)
-        {
-            ArenaCenter = NPC.Center;
-            ArenaTimer = ArenaDuration;
-        }
-
-        private float[] aiWeights = new float[8];
+        public float[] aiWeights = new float[8];
 
         private void PickAttack() // Checks the RNG pool to see if the pool needs a reset, then picks a random attack.
         {
@@ -106,24 +159,25 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
                 ResetAIStates();
                 NPC.ai[0] = 1;
             }
-            else // Pick a random attack and reduce its weight otherwise.
+            else if (ArenaTimer < ArenaDuration) // Pick a random attack and reduce its weight otherwise, assuming its not time to make a new arena or change phase.
             {
                 NPC.ai[0] = aiStatePool;
                 aiWeights[(int)NPC.ai[0]]--;
-            }           
+            }
+            else NPC.ai[0] = 8; // Make a new arena if the timer is up.
 
-            if (ArenaTimer >= ArenaDuration) NPC.ai[0] = 8; // If it's time to make a new arena, perform it instead of any other attacks.
+            if ((NPC.life <= NPC.lifeMax * .6f && !phase2) || (NPC.life <= NPC.lifeMax * .2f && Main.expertMode && !phase3)) NPC.ai[0] = 9;
         }
 
         private void ResetAIStates()
         {
             aiWeights[0] = 0;
-            for (int state = 2; state < aiWeights.Length; state++)
+            for (int state = 2; state < aiWeights.Length; state++) // Enemy attack pool resets here. Attack pool is determined by phase.
             {
-                aiWeights[state] = (state >= 6 ? 1 : state >= 4 ? 2 : 3);
+                if (phase3) aiWeights[state] = state == 2 ? 10 : 0;
+                else if (phase2 && !phase3) aiWeights[state] = (state % 2 == 0 ? 3 : 2);
+                else aiWeights[state] = (state >= 6 ? 1 : state >= 4 ? 2 : 3);
             }
-
-            Main.NewText("Reset");
         }
     }
 }

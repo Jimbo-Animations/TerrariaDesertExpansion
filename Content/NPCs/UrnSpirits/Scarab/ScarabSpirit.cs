@@ -40,7 +40,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Scarab
 
             NPC.damage = 0;
             NPC.defense = 0;
-            NPC.lifeMax = Main.getGoodWorld ? 80 : Main.masterMode ? 65 : 50;
+            NPC.lifeMax = (Main.getGoodWorld ? 80 : Main.masterMode ? 65 : 50) * (Main.hardMode ? 3 : 1);
             NPC.knockBackResist = .05f;
             NPC.value = Item.buyPrice(0, 0, 0, 6);
             NPC.npcSlots = .02f;
