@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.Utilities;
+using TerrariaDesertExpansion.Content.Items.Placeables.Trophies;
 
 namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
 {
@@ -22,6 +24,12 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
         public override void BossLoot(ref int potionType)
         {
             potionType = ItemID.HealingPotion;
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            // Common drops.
+            npcLoot.Add(ItemDropRule.Common(ItemType<PharaohTrophy>(), 10));
         }
 
         public override void FindFrame(int frameHeight)
@@ -139,6 +147,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
         public bool changeDirection = true;
         public bool useContactDamage;
         public float shakeFrequency = .05f;
+        public float MusicPitch;
 
         public float[] aiWeights = new float[8];
 

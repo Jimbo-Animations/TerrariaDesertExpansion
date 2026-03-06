@@ -63,6 +63,11 @@ namespace TerrariaDesertExpansion.Content.Tiles
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
+            if (WorldGen.generatingWorld) // I love you DylanDoe21
+            {
+                return;
+            }
+
             int urnType = 0;
 
             if (frameY == 0) // 0 * 18 = 0

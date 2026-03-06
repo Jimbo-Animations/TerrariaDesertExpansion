@@ -77,7 +77,7 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
                             else break;
                         }
                     }
-                    else CreateDesertShrine(Main.rand.NextBool(), Main.rand.NextBool());
+                    else CreateDesertShrine(tombType, Main.rand.NextBool());
 
                     GenVars.structures.AddProtectedStructure(new Rectangle(x - 6, y - 6, 13, 8), 4);
                 }
@@ -167,7 +167,7 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
                     WorldGen.PlaceTile(x + 3, y - 3, TileID.Banners, true, style: 2);
 
                     WorldGen.PlaceTile(x - 4, y - 3, TileID.Banners, true, style: 2);
-
+                    
                     // Place urn
 
                     WorldGen.PlaceTile(x, y, TileType<HauntedUrn>(), true, style: rotateUrnType);

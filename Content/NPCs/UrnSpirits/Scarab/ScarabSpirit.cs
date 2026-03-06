@@ -60,7 +60,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Scarab
             {
                 for (int i = 1; i < (Main.expertMode ? 29 : 19); i++)
                 {
-                    NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)NPC.Center.X + Main.rand.Next(-1, 2), (int)NPC.Center.Y - i, NPC.type, ai0: 1);
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-1, 2), (int)NPC.Center.Y - i, NPC.type, ai0: 1);
                 }
             }
         }

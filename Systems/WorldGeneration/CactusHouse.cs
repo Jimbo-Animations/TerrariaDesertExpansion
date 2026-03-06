@@ -7,7 +7,7 @@ using TerrariaDesertExpansion.Content.Items.Weapons;
 
 namespace TerrariaDesertExpansion.Systems.WorldGeneration
 {
-    public class DesertStructureSystem : ModSystem
+    public class CactusHouse : ModSystem
     {
         public static LocalizedText DesertHouseMessage { get; private set; }
 
@@ -37,7 +37,7 @@ namespace TerrariaDesertExpansion.Systems.WorldGeneration
 
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = DesertStructureSystem.DesertHouseMessage.Value;
+            progress.Message = CactusHouse.DesertHouseMessage.Value;
 
             int x = 1;
             int y = 1;

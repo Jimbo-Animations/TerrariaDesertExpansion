@@ -255,7 +255,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
                                 PunchCameraModifier modifier = new PunchCameraModifier(NPC.Center, new Vector2(0f, 1f), 3f, 3f, 10, 500f, "HallowedCactoid");
                                 Main.instance.CameraModifiers.Add(modifier);
 
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, ProjectileType<CactusSlimeShockwave>(), 25, 2f, Main.myPlayer);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ProjectileType<CactusSlimeShockwave>(), 25, 2f, Main.myPlayer);
                                 NPC.velocity = Vector2.Zero;
 
                                 NPC.netUpdate = true;
@@ -303,8 +303,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
             {
                 int gore1 = Mod.Find<ModGore>("HallowedCactoidGore1").Type;
                 int gore2 = Mod.Find<ModGore>("HallowedCactoidGore2").Type;
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position - new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore1);
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position + new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore2);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position - new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore1);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore2);
             }
         }
 

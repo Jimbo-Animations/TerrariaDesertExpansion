@@ -101,7 +101,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
 
                     for (int i = -2; i < 3; i++)
                     {
-                        int sword = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ProjectileType<DesertBlade>(), 16, 2f, Main.myPlayer);
+                        int sword = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ProjectileType<DesertBlade>(), 16, 2f, Main.myPlayer);
                         Main.projectile[sword].ai[0] = new Vector2(1, 0).RotatedBy(NPC.rotation + MathHelper.PiOver2 / 5 * i).ToRotation();
                     }                    
                 }
@@ -180,7 +180,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        var proj = Projectile.NewProjectile(NPC.GetSource_FromThis(), BasicUtils.findGroundUnder(NPC.Center + new Vector2(-NPC.direction * (phase2 ? 24 : 32) * i, 0)),
+                        var proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), BasicUtils.findGroundUnder(NPC.Center + new Vector2(-NPC.direction * (phase2 ? 24 : 32) * i, 0)),
                         new Vector2(-NPC.direction * i * 2, -2.5f + (i * .5f)), ProjectileType<SandBarrier>(), 15, 1, target.whoAmI);
                         Main.projectile[proj].ai[2] = 1;
                     }
@@ -242,7 +242,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             {
                 SoundEngine.PlaySound(SoundID.Item116 with { Volume = 2f, Pitch = -.2f }, NPC.Center);
 
-                var proj = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(1, 0).RotatedBy(NPC.rotation + MathHelper.ToRadians(AITimer2 % 2 == 0 ? AITimer2 * 2 : -AITimer2 * 2)), ProjectileType<CurseBlast>(), 16, 1, target.whoAmI);
+                var proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(1, 0).RotatedBy(NPC.rotation + MathHelper.ToRadians(AITimer2 % 2 == 0 ? AITimer2 * 2 : -AITimer2 * 2)), ProjectileType<CurseBlast>(), 16, 1, target.whoAmI);
                 Main.projectile[proj].ai[0] = 25;
                 Main.projectile[proj].ai[1] = Main.rand.NextBool() ? -1 : 1;
                 Main.projectile[proj].ai[2] = 20;
@@ -312,7 +312,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
 
                 for (int i = 0; i < projNum; i++)
                 {
-                    var proj = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(1, 0).RotatedBy(NPC.rotation + (MathHelper.ToRadians(30 * projNum) / projNum * i) - MathHelper.ToRadians(30 * projNum / 3)), ProjectileType<CurseBlastBig>(), 20, 1, target.whoAmI);
+                    var proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(1, 0).RotatedBy(NPC.rotation + (MathHelper.ToRadians(30 * projNum) / projNum * i) - MathHelper.ToRadians(30 * projNum / 3)), ProjectileType<CurseBlastBig>(), 20, 1, target.whoAmI);
                     Main.projectile[proj].ai[0] = 30;
                     Main.projectile[proj].ai[1] = Main.rand.NextBool() ? -1 : 1;
                     Main.projectile[proj].ai[2] = 12;
@@ -384,7 +384,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
                     {
                         SoundEngine.PlaySound(SoundID.Item103, NPC.Center);
 
-                        var proj = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position + new Vector2(Main.rand.Next(NPC.width + 1), Main.rand.Next(NPC.height + 1)), new Vector2 (1,0).RotatedBy(NPC.rotation), ProjectileType<DustVortex>(), 18, 1, target.whoAmI);
+                        var proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.position + new Vector2(Main.rand.Next(NPC.width + 1), Main.rand.Next(NPC.height + 1)), new Vector2 (1,0).RotatedBy(NPC.rotation), ProjectileType<DustVortex>(), 18, 1, target.whoAmI);
                         NPC.netUpdate = true;
                     }
                 }
@@ -429,14 +429,14 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             {
                 Vector2 swordPos = NPC.Center + new Vector2(0, phase2 ? 100 : 75).RotatedBy(MathHelper.TwoPi / (phase2 ? 20 : 10) * AITimer2) * NPC.direction; 
 
-                int sword = Projectile.NewProjectile(NPC.GetSource_FromThis(), swordPos, Vector2.Zero, ProjectileType<DesertBlade>(), 16, 2f, Main.myPlayer);
+                int sword = Projectile.NewProjectile(NPC.GetSource_FromAI(), swordPos, Vector2.Zero, ProjectileType<DesertBlade>(), 16, 2f, Main.myPlayer);
                 Main.projectile[sword].ai[0] = swordPos.DirectionTo(target.Center + target.velocity * NPC.Distance(target.Center) / 1.5f).ToRotation();
 
                 if (phase2)
                 {
                     swordPos = NPC.Center + new Vector2(0, 100).RotatedBy(MathHelper.TwoPi / 20 * (AITimer2 + 10)) * NPC.direction;
 
-                    sword = Projectile.NewProjectile(NPC.GetSource_FromThis(), swordPos, Vector2.Zero, ProjectileType<DesertBlade>(), 16, 2f, Main.myPlayer);
+                    sword = Projectile.NewProjectile(NPC.GetSource_FromAI(), swordPos, Vector2.Zero, ProjectileType<DesertBlade>(), 16, 2f, Main.myPlayer);
                     Main.projectile[sword].ai[0] = swordPos.DirectionTo(target.Center + target.velocity * NPC.Distance(target.Center) / 1.5f).ToRotation();
                 }
 
@@ -484,7 +484,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
                 {
                     if (i % 3 == AITimer2)
                     {
-                        int barrier = Projectile.NewProjectile(NPC.GetSource_FromThis(), ArenaCenter + new Vector2(ArenaRadius, 0).RotatedBy(MathHelper.TwoPi / projCount * i), Vector2.Zero, ProjectileType<SandBarrier>(), 30, 2f, Main.myPlayer, NPC.whoAmI);
+                        int barrier = Projectile.NewProjectile(NPC.GetSource_FromAI(), ArenaCenter + new Vector2(ArenaRadius, 0).RotatedBy(MathHelper.TwoPi / projCount * i), Vector2.Zero, ProjectileType<SandBarrier>(), 30, 2f, Main.myPlayer, NPC.whoAmI);
                         Main.projectile[barrier].timeLeft = ArenaDuration + 180 - (int)AITimer;
                         Main.projectile[barrier].ai[0] = ArenaDir;
                         Main.projectile[barrier].ai[1] = ArenaRadius + 16;

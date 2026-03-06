@@ -258,8 +258,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
             {
                 int gore1 = Mod.Find<ModGore>("CactoidGore1").Type;
                 int gore2 = Mod.Find<ModGore>("CactoidGore2").Type;
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position - new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore1);
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position + new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore2);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position - new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore1);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore2);
             }
         }
 

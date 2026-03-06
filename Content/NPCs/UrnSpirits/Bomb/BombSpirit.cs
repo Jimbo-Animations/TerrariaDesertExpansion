@@ -129,7 +129,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Bomb
 
             if (NPC.ai[0]++ > 360)
             {
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ProjectileType<BombSpiritExplosion>(), 100, 2f, Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ProjectileType<BombSpiritExplosion>(), 100, 2f, Main.myPlayer);
                 SoundEngine.PlaySound(SoundID.DD2_KoboldExplosion, NPC.Center);
 
                 turnOffSound = true;

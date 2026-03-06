@@ -3,6 +3,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
 using TerrariaDesertExpansion.Content.Items.Equips;
+using TerrariaDesertExpansion.Content.Items.Placeables.Trophies;
 using TerrariaDesertExpansion.Content.Items.Weapons;
 using TerrariaDesertExpansion.Systems;
 
@@ -100,10 +101,18 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+            // Checks if the game is on classic mode.
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+
+            // Common drops.
+            npcLoot.Add(ItemDropRule.Common(ItemType<MegaCactusSlimeTrophy>(), 10));
             npcLoot.Add(ItemDropRule.Common(ItemID.Cactus, 1, 15, 20));
             npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 20, 30));
-            npcLoot.Add(ItemDropRule.Common(ItemType<SandShaker>(), 1));
-            npcLoot.Add(ItemDropRule.Common(ItemType<CactusLamp>(), 1));
+
+            // Drops alone on classic difficulty
+            notExpertRule.OnSuccess(npcLoot.Add(ItemDropRule.Common(ItemType<SandShaker>(), 1)));
+
+            npcLoot.Add(ItemDropRule.Common(ItemType<CactusLamp>(), 1)); // Might be expert/master exclusive?
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -121,7 +130,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             {
                 for (int i = 0; i < 8; i++)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(0, -Main.rand.NextFloat(4, 8)).RotatedByRandom(MathHelper.PiOver2), ProjectileType<CactusSlimeSpike>(), 0, 2f, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, -Main.rand.NextFloat(4, 8)).RotatedByRandom(MathHelper.PiOver2), ProjectileType<CactusSlimeSpike>(), 0, 2f, Main.myPlayer);
                 }
 
                 numDusts = 50;
@@ -187,7 +196,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                 stretchWidth = 1.25f;
                 stretchHeight = .75f;
 
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, ProjectileType<CactusSlimeShockwave>(), 8, 2f, Main.myPlayer);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ProjectileType<CactusSlimeShockwave>(), 8, 2f, Main.myPlayer);
 
                 NPC.velocity = Vector2.Zero;
                 isGrounded = true;

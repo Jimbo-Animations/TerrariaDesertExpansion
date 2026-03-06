@@ -44,7 +44,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.DustDevil
         {
             SoundEngine.PlaySound(SoundID.Item127, Projectile.Center);
 
-            NPC.NewNPC(NPC.GetSource_None(), (int)Projectile.Center.X + (int)Projectile.velocity.X, (int)Projectile.Bottom.Y + (int)Projectile.velocity.Y, NPCType<HauntedSandGlob>(), 1, Projectile.rotation);
+            NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X + (int)Projectile.velocity.X, (int)Projectile.Bottom.Y + (int)Projectile.velocity.Y, NPCType<HauntedSandGlob>(), 1, Projectile.rotation);
             Projectile.netUpdate = true;
 
             return true;

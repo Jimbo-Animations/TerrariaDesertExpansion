@@ -45,6 +45,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
             NPC.DeathSound = SoundID.NPCDeath1 with { Volume = 2, Pitch = -.2f };
 
             Music = MusicLoader.GetMusicSlot(Mod, "Content/Music/Undying_Fury");
+            //MusicLoader.GetMusic(Mod, "Content/Music/Undying_Fury").SetVariable("Pitch", MusicPitch);
+
         }
 
         public override void AI()

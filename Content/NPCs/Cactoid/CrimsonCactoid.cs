@@ -257,7 +257,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
 
                         for (int i = -1; i < 2; i++)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(NPC.direction * 10, 2), NPC.DirectionTo(target.Top).RotatedBy(MathHelper.ToRadians(5 * i)) * Main.rand.NextFloat(8, 11), ProjectileType<BloodSpit>(), 11, 2f, Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(NPC.direction * 10, 2), NPC.DirectionTo(target.Top).RotatedBy(MathHelper.ToRadians(5 * i)) * Main.rand.NextFloat(8, 11), ProjectileType<BloodSpit>(), 11, 2f, Main.myPlayer);
                         }
 
                         NPC.netUpdate = true;
@@ -302,8 +302,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
             {
                 int gore1 = Mod.Find<ModGore>("CrimsonCactoidGore1").Type;
                 int gore2 = Mod.Find<ModGore>("CrimsonCactoidGore2").Type;
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position - new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore1);
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.position + new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore2);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position - new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore1);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 6), NPC.velocity.RotatedByRandom(MathHelper.ToRadians(10)) / 2, gore2);
             }
         }
 

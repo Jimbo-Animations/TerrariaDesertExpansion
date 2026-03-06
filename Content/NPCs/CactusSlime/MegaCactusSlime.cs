@@ -121,8 +121,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                     {
                         SoundEngine.PlaySound(SoundID.Item39 with { Pitch = -.1f, Volume = 2 }, NPC.Center);
 
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.NextFloat(2, 13), MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -30, -15)) + new Vector2(0, Main.rand.NextFloat(-0.5f, 0.6f)), ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.NextFloat(-12, -1), MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -30, -15)) + new Vector2(0, Main.rand.NextFloat(-0.5f, 0.6f)), ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(Main.rand.NextFloat(2, 13), MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -30, -15)) + new Vector2(0, Main.rand.NextFloat(-0.5f, 0.6f)), ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(Main.rand.NextFloat(-12, -1), MathHelper.Clamp((NPC.Center.Y - target.Center.Y) / -25, -30, -15)) + new Vector2(0, Main.rand.NextFloat(-0.5f, 0.6f)), ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
                         NPC.netUpdate = true;
                     }
 
@@ -164,7 +164,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
                         for (int i = -5; i < 5; i++)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, NPC.DirectionTo(target.Center).RotatedBy(MathHelper.Pi * i / 10) * 8, ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(target.Center).RotatedBy(MathHelper.Pi * i / 10) * 8, ProjectileType<CactusSlimeSpike>(), 6, 2f, Main.myPlayer);
                         }
 
                         NPC.netUpdate = true;

@@ -51,5 +51,7 @@ namespace TerrariaDesertExpansion
         {
             UnloadMod(this);
         }
+
+        // ADD PACKETS!!! 
     }
 }

@@ -90,7 +90,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.DustDevil
             {
                 for (int i = 1; i < 3; i++)
                 {
-                    swarmNPC = Main.npc[NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)NPC.Center.X + Main.rand.Next(-1, 2), (int)NPC.Center.Y - i, NPC.type, ai0: i)];
+                    swarmNPC = Main.npc[NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-1, 2), (int)NPC.Center.Y - i, NPC.type, ai0: i)];
                     swarmNPC.frame.Y = Main.rand.Next(0, 7) * NPC.frame.Height;
                     NPC.damage = 0;
                 }
@@ -133,7 +133,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.DustDevil
 
                         Vector2 shootPoint = target.Top + new Vector2(0, -Math.Abs(target.Center.X - NPC.Center.X ) / 1.5f);
 
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(NPC.direction * (2 * stretchWidth), 6 * stretchHeight), NPC.DirectionTo(shootPoint + target.velocity * (NPC.Distance(shootPoint) / 4)) * 8, ProjectileType<HauntedSandBall>(), 16, 2f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(NPC.direction * (2 * stretchWidth), 6 * stretchHeight), NPC.DirectionTo(shootPoint + target.velocity * (NPC.Distance(shootPoint) / 4)) * 8, ProjectileType<HauntedSandBall>(), 16, 2f, Main.myPlayer);
                         SpitAttack = false;
 
                         NPC.netUpdate = true;

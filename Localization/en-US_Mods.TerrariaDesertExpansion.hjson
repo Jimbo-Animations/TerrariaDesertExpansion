@@ -48,6 +48,16 @@ Items: {
 		DisplayName: Haunted Sand
 		Tooltip: It still wriggles in your grasp
 	}
+
+	PharaohTrophy: {
+		DisplayName: Pharaoh Trophy
+		Tooltip: ""
+	}
+
+	MegaCactusSlimeTrophy: {
+		Tooltip: ""
+		DisplayName: Mega Cactus Slime Trophy
+	}
 }
 
 WorldGen: {

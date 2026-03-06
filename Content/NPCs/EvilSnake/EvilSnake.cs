@@ -80,7 +80,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
 
                 if (animState == 1 && NPC.frame.Y == NPC.frame.Height * 3)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(30 * NPC.direction, -3), new Vector2(4 * NPC.direction, 0), ProjectileType<EvilSnakeBite>(), 10, 2f, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(30 * NPC.direction, -3), new Vector2(4 * NPC.direction, 0), ProjectileType<EvilSnakeBite>(), 10, 2f, Main.myPlayer);
 
                     SoundEngine.PlaySound(SoundID.NPCHit2, NPC.Center);
                 }
@@ -153,10 +153,10 @@ namespace TerrariaDesertExpansion.Content.NPCs.EvilSnake
                 int gore2 = Mod.Find<ModGore>("EvilSnakeGore2").Type;
                 int gore3 = Mod.Find<ModGore>("EvilSnakeGore3").Type;
                 int gore4 = Mod.Find<ModGore>("EvilSnakeGore4").Type;
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.Top + new Vector2(12 * NPC.direction, 0), new Vector2(6 * -NPC.direction, - 6).RotatedByRandom(MathHelper.ToRadians(10)), gore1);
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.Bottom - new Vector2(12 * NPC.direction, 0), new Vector2(4 * -NPC.direction, 0).RotatedByRandom(MathHelper.ToRadians(10)), gore2);
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center, new Vector2(1 * NPC.direction, -1).RotatedByRandom(MathHelper.ToRadians(10)), gore3);
-                Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, gore4);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Top + new Vector2(12 * NPC.direction, 0), new Vector2(6 * -NPC.direction, - 6).RotatedByRandom(MathHelper.ToRadians(10)), gore1);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Bottom - new Vector2(12 * NPC.direction, 0), new Vector2(4 * -NPC.direction, 0).RotatedByRandom(MathHelper.ToRadians(10)), gore2);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Center, new Vector2(1 * NPC.direction, -1).RotatedByRandom(MathHelper.ToRadians(10)), gore3);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vector2.Zero, gore4);
             }
         }
 

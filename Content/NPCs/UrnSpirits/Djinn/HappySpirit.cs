@@ -108,7 +108,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Djinn
                     SoundEngine.PlaySound(SoundID.AbigailCry with { Pitch = .1f, Volume = 1.5f }, NPC.Center);
                     SoundEngine.PlaySound(SoundID.Item176 with { Pitch = -.3f }, NPC.Center);
 
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPos, Vector2.Zero, ProjectileID.CoinPortal, 0, 2f, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), spawnPos, Vector2.Zero, ProjectileID.CoinPortal, 0, 2f, Main.myPlayer);
 
                     for (int i = 0; i < Main.maxPlayers; i++)
                     {
