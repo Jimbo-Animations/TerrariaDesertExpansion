@@ -147,6 +147,9 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
             Projectile.DamageType = DamageClass.Magic;
             Projectile.penetrate = 2;
 
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 10;
+
             Projectile.ignoreWater = true;
             Projectile.extraUpdates = 1;
         }

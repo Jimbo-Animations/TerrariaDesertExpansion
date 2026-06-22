@@ -3,8 +3,11 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
 using TerrariaDesertExpansion.Content.Items.Equips;
+using TerrariaDesertExpansion.Content.Items.Equips.Armor;
+using TerrariaDesertExpansion.Content.Items.Materials;
+using TerrariaDesertExpansion.Content.Items.Misc;
+using TerrariaDesertExpansion.Content.Items.Placeables.Relics;
 using TerrariaDesertExpansion.Content.Items.Placeables.Trophies;
-using TerrariaDesertExpansion.Content.Items.Weapons;
 using TerrariaDesertExpansion.Systems;
 
 namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
@@ -70,6 +73,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
         public ref float AIModifier => ref NPC.localAI[0];
 
         public bool isGrounded;
+        public bool enrage;
         public int contactDamage;
         public int jumpDuration;
         public float auraAlpha;
@@ -80,6 +84,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.Write(isGrounded);
+            writer.Write(enrage);
             writer.Write(contactDamage);
             writer.Write(jumpDuration);
             writer.Write(auraAlpha);
@@ -91,6 +96,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             isGrounded = reader.ReadBoolean();
+            enrage = reader.ReadBoolean();
             contactDamage = reader.ReadInt32();
             jumpDuration = reader.ReadInt32();
             auraAlpha = reader.ReadInt32();
@@ -109,10 +115,21 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             npcLoot.Add(ItemDropRule.Common(ItemID.Cactus, 1, 15, 20));
             npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 20, 30));
 
-            // Drops alone on classic difficulty
-            notExpertRule.OnSuccess(npcLoot.Add(ItemDropRule.Common(ItemType<SandShaker>(), 1)));
+            // Drops on classic difficulty
+            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<DesertAloe>(), 1, 2, 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ItemType<CactusLamp>(), 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ItemType<CactusSlime_Mask>(), 7));
 
-            npcLoot.Add(ItemDropRule.Common(ItemType<CactusLamp>(), 1)); // Might be expert/master exclusive?
+            npcLoot.Add(notExpertRule);
+
+            // Drops on expert difficulty
+            npcLoot.Add(ItemDropRule.BossBag(ItemType<MegaCactusSlimeTreasureBag>()));
+
+            // ItemDropRule.MasterModeCommonDrop for the relic
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ItemType<MegaCactusSlimeRelic>()));
+
+            // ItemDropRule.MasterModeDropOnAllPlayers for the pet
+            npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ItemType<FunkyFruit>(), 4));
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -165,6 +182,9 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
             NPC.EncourageDespawn(30);
 
+            MathHelper.Clamp(stretchWidth, 0, 2f);
+            MathHelper.Clamp(stretchHeight, 0, 2f);
+
             if (target.dead || !target.active || !Main.dayTime)
             {
                 NPC.dontTakeDamage = true;
@@ -180,9 +200,10 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                 NPC.velocity.X += 0.001f * -goalDirection;
                 jumpDuration++;
 
-                if (jumpDuration > 60)
+                if (jumpDuration > 60 && NPC.ai[0] != 4)
                 {
                     NPC.ai[0] = 4;
+                    enrage = true;
                     resetVars();
                 }
             }
@@ -237,16 +258,27 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             stretchHeight = MathHelper.SmoothStep(stretchHeight, height, .2f);
         }
 
-        private bool FindTeleportPoint(Player player)
+        private bool FindTeleportPoint(Player player, bool enrage = false)
         {
             //try up to 20 times
             for (int i = 0; i < 40; i++)
             {
                 float direction = Main.rand.NextBool() ? -1 : 1;
 
-                Vector2 tryGoalPoint = player.Center + new Vector2(-NPC.width / 2 + Main.rand.NextFloat(150f, 300f) * direction, Main.rand.NextFloat(-250f, 250f));
-                tryGoalPoint.Y = 16 * (int)(tryGoalPoint.Y / 16);
-                tryGoalPoint -= new Vector2(0, NPC.height);
+                Vector2 tryGoalPoint;
+
+                if (enrage)
+                {
+                    tryGoalPoint = player.Center + new Vector2(-NPC.width / 2 + Main.rand.NextFloat(0, 50f) * direction, Main.rand.NextFloat(-50f, 50f));
+                    tryGoalPoint.Y = 16 * (int)(tryGoalPoint.Y / 16);
+                    tryGoalPoint -= new Vector2(0, NPC.height);
+                }
+                else
+                {
+                    tryGoalPoint = player.Center + new Vector2(-NPC.width / 2 + Main.rand.NextFloat(150f, 300f) * direction, Main.rand.NextFloat(-250f, 250f));
+                    tryGoalPoint.Y = 16 * (int)(tryGoalPoint.Y / 16);
+                    tryGoalPoint -= new Vector2(0, NPC.height);
+                }              
 
                 bool viable = true;
 

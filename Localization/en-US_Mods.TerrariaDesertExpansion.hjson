@@ -50,13 +50,87 @@ Items: {
 	}
 
 	PharaohTrophy: {
-		DisplayName: Pharaoh Trophy
+		DisplayName: Vengeful Haunter Trophy
 		Tooltip: ""
 	}
 
 	MegaCactusSlimeTrophy: {
-		Tooltip: ""
 		DisplayName: Mega Cactus Slime Trophy
+		Tooltip: ""
+	}
+
+	PharaohRelic: {
+		DisplayName: Vengeful Haunter Relic
+		Tooltip: ""
+	}
+
+	MegaCactusSlimeRelic: {
+		DisplayName: Mega Cactus Slime Relic
+		Tooltip: ""
+	}
+
+	CactusSlime_Mask: {
+		DisplayName: Mega Cactus Slime's Mask
+		Tooltip: ""
+	}
+
+	PharaohsCurse_Mask: {
+		DisplayName: Vengeful Haunter's Mask
+		Tooltip: ""
+	}
+
+	FunkyFruit: {
+		DisplayName: Funky Fruit
+		Tooltip: Summons a Mini Cactus Slime
+	}
+
+	DesertAloe: {
+		DisplayName: Desert Aloe
+		Tooltip: Sticky...
+	}
+
+	AloeStaff: {
+		DisplayName: Aloe Staff
+		Tooltip:
+			'''
+			Summons an Aloe Bubble to fight for you
+			Shoots aloe leaves that embed in targets
+			Whipping embedded enemies deals further damage and heals the user
+			'''
+	}
+
+	AboreArrow: {
+		DisplayName: Abore Arrow
+		Tooltip:
+			'''
+			Embeds in targets and increases damage they take by 1 (stacks up to 5 times)
+			Embed timer resets every time a new arrow is embedded into the target
+			Minions and sentries do not receive bonus damage on targets
+			'''
+	}
+
+	NeedleStorm: {
+		DisplayName: Needle Storm
+		Tooltip:
+			'''
+			Shoots needles from the sky
+			Ignores 10 points of enemy defense
+			"Woe, needles upon ye."
+			'''
+	}
+
+	BotanicBomb: {
+		DisplayName: Botanic Bomb
+		Tooltip:
+			'''
+			A reusable explosion with shrapnel
+			30 second cooldown after every use
+			'''
+	}
+
+	MegaCactusSlimeTreasureBag: {
+		DisplayName: Treasure Bag
+		Tooltip: Right Click to open
 	}
 }
 
@@ -100,6 +174,13 @@ Projectiles: {
 	CurseBlastBig.DisplayName: Curse Blast Big
 	DustVortex.DisplayName: Dust Vortex
 	DesertBlade.DisplayName: Desert Blade
+	MiniCactusSlime.DisplayName: Mini Cactus Slime
+	AloeStriker.DisplayName: Aloe Striker
+	AloeLeaf.DisplayName: Aloe Leaf
+	AboreArrowProjectile.DisplayName: Abore Arrow
+	NeedleStormProjectile.DisplayName: Needle Storm
+	BotanicBombProj.DisplayName: Botanic Bomb Proj
+	BotanicBombShrapnel.DisplayName: Botanic Bomb Shrapnel
 }
 
 Buffs: {
@@ -111,5 +192,30 @@ Buffs: {
 	HappySpiritBuff: {
 		DisplayName: Jinn's Blessing
 		Description: You feel lucky!
+	}
+
+	MiniCactusSlimeBuff: {
+		DisplayName: Mini Cactus Slime
+		Description: Please feed me!
+	}
+
+	AloeStaffBuff: {
+		DisplayName: Aloe Staff Buff
+		Description: The Aloe Bubble will fight for you
+	}
+
+	AloeLeafDebuff: {
+		DisplayName: Aloe Leaf Debuff
+		Description: ""
+	}
+
+	AboreArrowDebuff: {
+		DisplayName: Abore Arrow Debuff
+		Description: ""
+	}
+
+	BotanicBombCooldown: {
+		DisplayName: Botanic Bomb Cooldown
+		Description: ""
 	}
 }

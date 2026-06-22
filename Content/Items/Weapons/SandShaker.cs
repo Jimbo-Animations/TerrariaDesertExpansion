@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.CameraModifiers;
+using TerrariaDesertExpansion.Content.Items.Materials;
 
 namespace TerrariaDesertExpansion.Content.Items.Weapons
 {
@@ -11,7 +12,7 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
         public override void SetDefaults()
         {
             Item.Size = new Vector2(70);
-            Item.value = Item.sellPrice(gold: 2, silver: 50);
+            Item.value = Item.sellPrice(gold: 1);
             Item.rare = ItemRarityID.Green;
             Item.useTime = Item.useAnimation = 60;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -34,6 +35,15 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
         public override bool MeleePrefix()
         {
             return true;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemType<DesertAloe>(), 1)
+                .AddIngredient(ItemID.Cactus, 10)
+                .AddTile(TileID.WorkBenches)
+                .Register();
         }
     }
 
@@ -234,7 +244,7 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
                 PunchCameraModifier modifier = new PunchCameraModifier(Projectile.Center, new Vector2(Projectile.direction, 1f), 3f, 3f, 10, 500f, "SandShaker");
                 Main.instance.CameraModifiers.Add(modifier);
 
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     int dust = Dust.NewDust(BasicUtils.findGroundUnder(target.Center + new Vector2(Main.rand.NextFloat(-30, 31), 0)), 0, 0, 124, Scale: 1f);
                     Main.dust[dust].noGravity = false;

@@ -12,7 +12,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.PharaohsCurse
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
-                new FlavorTextBestiaryInfoElement("")
+                new FlavorTextBestiaryInfoElement("Do NOT disturb his eternal slumber.")
             });
         }
 

@@ -1,4 +1,6 @@
-﻿namespace TerrariaDesertExpansion.Content.Items.Equips
+﻿using System.Runtime.InteropServices;
+
+namespace TerrariaDesertExpansion.Content.Items.Equips
 {
     class CactusLamp : ModItem
     {
@@ -50,17 +52,8 @@
         public override void SetStaticDefaults()
         {
             Main.projPet[Projectile.type] = true;
-
-            // This code is needed to customize the vanity pet display in the player select screen. Quick explanation:
-            // * It uses fluent API syntax, just like Recipe
-            // * You start with ProjectileID.Sets.SimpleLoop, specifying the start and end frames as well as the speed, and optionally if it should animate from the end after reaching the end, effectively "bouncing"
-            // * To stop the animation if the player is not highlighted/is standing, as done by most grounded pets, add a .WhenNotSelected(0, 0) (you can customize it just like SimpleLoop)
-            // * To set offset and direction, use .WithOffset(x, y) and .WithSpriteDirection(-1)
-            // * To further customize the behavior and animation of the pet (as its AI does not run), you have access to a few vanilla presets in DelegateMethods.CharacterPreview to use via .WithCode(). You can also make your own, showcased in MinionBossPetProjectile
-            ProjectileID.Sets.CharacterPreviewAnimations[Projectile.type] = ProjectileID.Sets.SimpleLoop(0, 0)
-                .WithOffset(-10, -20f)
-                .WithSpriteDirection(-1)
-                .WithCode(DelegateMethods.CharacterPreview.Float);
+            ProjectileID.Sets.LightPet[Type] = true;
+            Main.projFrames[Type] = 1;
         }
 
         public override void SetDefaults()
@@ -84,7 +77,7 @@
         private void CheckActive(Player player)
         {
             // Keep the projectile from disappearing as long as the player isn't dead and has the pet buff
-            if (!player.dead && player.HasBuff(ModContent.BuffType<CactusLampBuff>()))
+            if (!player.dead && player.HasBuff(BuffType<CactusLampBuff>()))
             {
                 Projectile.timeLeft = 2;
             }
@@ -112,14 +105,22 @@
 
             CheckActive(owner);
 
-            if (Projectile.Distance(IdealPos) > 160) chase = true;
-            if (Projectile.Distance(IdealPos) < 80) chase = false;
+            if (Projectile.Distance(IdealPos) > 160) 
+            {
+                if (Projectile.Distance(IdealPos) > 1000 && !chase)
+                {
+                    Projectile.position = IdealPos - (Projectile.Size / 2);
+                    Projectile.velocity = Vector2.Zero;
+                }
+                else chase = true;
+            }
+            else if (Projectile.Distance(IdealPos) < 80 && chase) chase = false;
 
             // Decides whether the pet should move slow or fast
 
             if (chase)
             {
-                Projectile.velocity += Projectile.DirectionTo(IdealPos) * 0.5f;
+                Projectile.velocity += Projectile.DirectionTo(IdealPos + owner.velocity) * 0.5f;
                 Projectile.rotation = Projectile.rotation.AngleTowards(Projectile.velocity.ToRotation() + MathHelper.PiOver2, .2f);
                 Projectile.velocity *= 0.99f;
 
@@ -133,8 +134,8 @@
             }
             else
             {
-                if (Projectile.Distance(IdealPos) > 4) Projectile.velocity += Projectile.DirectionTo(IdealPos) * 0.2f;
-                Projectile.velocity *= 0.95f;
+                if (Projectile.Distance(IdealPos) > 4) Projectile.velocity += Projectile.DirectionTo(IdealPos + owner.velocity) * 0.2f;
+                Projectile.velocity *= owner.velocity == Vector2.Zero ? 0.95f : 0.98f;
 
                 Projectile.rotation = Projectile.rotation.AngleTowards(MathHelper.Clamp(Projectile.velocity.X * 0.1f, -0.75f, 0.75f), 0.2f);                
             }

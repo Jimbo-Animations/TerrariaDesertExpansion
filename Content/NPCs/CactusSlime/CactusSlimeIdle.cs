@@ -25,7 +25,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
 
             NPC.damage = 20;
             NPC.defense = 9999;
-            NPC.lifeMax = Main.masterMode ? 1721 / 3 : Main.expertMode ? 1350 / 2 : 1000;
+            NPC.lifeMax = Main.masterMode ? 2065 / 3 : Main.expertMode ? 1620 / 2 : 1200;
             NPC.knockBackResist = 0;
             NPC.scale = Main.getGoodWorld ? 1.25f : 1;
             NPC.npcSlots = 50f;
@@ -45,9 +45,9 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.PlayerSafe) return 0f;
-            if (NPC.AnyNPCs(NPCType<MegaCactusSlime>())) return 0f;
+            if (NPC.AnyNPCs(NPCType<MegaCactusSlime>()) || NPC.AnyNPCs(NPCType<CactusSlimeIdle>())) return 0f;
 
-            if (spawnInfo.Player.ZoneDesert && Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return Progression.DownedCactusSlime ? 0.012f : 0.12f;
+            if (spawnInfo.Player.ZoneDesert && Main.dayTime && spawnInfo.SpawnTileY <= Main.worldSurface && spawnInfo.SpawnTileType == TileID.Sand && !spawnInfo.Water) return Progression.DownedCactusSlime ? 0.02f : 0.2f;
             else return 0f;
         }
 

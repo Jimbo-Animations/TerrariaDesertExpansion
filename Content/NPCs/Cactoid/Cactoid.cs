@@ -34,7 +34,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.Cactoid
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
-                new FlavorTextBestiaryInfoElement("Nocturnal desert wanderers; cactoids are known for their sporadic, unpredictable nature and deceptively dexterous capabilities. It's best to keep your distance from them if you can.")
+                new FlavorTextBestiaryInfoElement("Nocturnal desert wanderers. Cactoids are known for their sporadic, unpredictable nature and deceptively dexterous capabilities. It's best to keep your distance from them if you can.")
             });
         }
 

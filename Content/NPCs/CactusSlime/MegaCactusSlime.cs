@@ -15,10 +15,9 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.TrailingMode[NPC.type] = 3;
 
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Venom] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
         }
 
         public override void SetDefaults()
@@ -27,8 +26,8 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
             NPC.Size = new Vector2(74, 58);
 
             NPC.damage = 20;
-            NPC.defense = 4;
-            NPC.lifeMax = Main.masterMode ? 1721 / 3 : Main.expertMode ? 1350 / 2 : 1000;
+            NPC.defense = 5;
+            NPC.lifeMax = Main.masterMode ? 2065 / 3 : Main.expertMode ? 1620 / 2 : 1200;
             NPC.knockBackResist = 0f;
             NPC.scale = Main.getGoodWorld ? 1.25f : 1;
             NPC.value = Item.buyPrice(0, 0, 25, 0);
@@ -190,7 +189,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                     if (AITimer == 1)
                     {
                         SoundEngine.PlaySound(SoundID.Zombie116 with { Pitch = -.1f, Volume = 2 }, NPC.Center);
-                        FindTeleportPoint(target);
+                        FindTeleportPoint(target, enrage);
                         NPC.dontTakeDamage = true;
                     }
 
@@ -207,6 +206,7 @@ namespace TerrariaDesertExpansion.Content.NPCs.CactusSlime
                     {
                         NPC.ai[0] = 1;
                         NPC.dontTakeDamage = false;
+                        enrage = false;
                         resetVars();
                     }
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria;
+﻿using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.ObjectData;
 using TerrariaDesertExpansion.Content.NPCs.UrnSpirits.Bomb;

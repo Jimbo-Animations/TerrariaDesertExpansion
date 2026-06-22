@@ -1,5 +1,4 @@
 ﻿using Terraria.DataStructures;
-using TerrariaDesertExpansion.Content.Items.Materials;
 
 namespace TerrariaDesertExpansion.Content.Items.Weapons
 {
@@ -15,12 +14,11 @@ namespace TerrariaDesertExpansion.Content.Items.Weapons
         {
             Item.damage = 10;
             Item.knockBack = 2f;
-            Item.mana = 10;
             Item.Size = new Vector2(48);
             Item.useTime = 30;
             Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Swing;
-            Item.value = Item.sellPrice(gold: 10);
+            Item.value = Item.sellPrice(gold: 5);
             Item.rare = ItemRarityID.Green;
             Item.UseSound = SoundID.Item44;
 
